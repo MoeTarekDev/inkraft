@@ -4,7 +4,7 @@ import "./globals.css";
 import { ClerkProvider, SignedIn } from "@clerk/nextjs";
 import Sidebar from "@/components/Sidebar";
 import { ThemeProvider } from "next-themes";
-import "@theme-toggles/react/css/darkside.css";
+// import "@theme-toggles/react/css/darkside.css";
 import PageLoader from "@/components/PageLoader";
 
 const brockMann = localFont({
