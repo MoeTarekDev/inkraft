@@ -1,5 +1,4 @@
 import { User } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import UserAvatarWithHover from "./UserAvatarWithHover";
 import UserNameWithHover from "./UserNameWithHover";
 

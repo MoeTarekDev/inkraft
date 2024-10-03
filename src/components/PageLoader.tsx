@@ -1,29 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+//@ts-expect-error www
 import NProgress from "nprogress";
 
 NProgress.configure({ showSpinner: false });
+
 export default function PageLoader() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [isNavigating, setIsNavigating] = useState(false);
+  const isNavigating = useRef(false);
 
   useEffect(() => {
-    if (!isNavigating) {
+    if (!isNavigating.current) {
       NProgress.start();
-      setIsNavigating(true);
+      isNavigating.current = true;
     }
 
     const timeoutId = setTimeout(() => {
       NProgress.done();
-      setIsNavigating(false);
-    }, 300); // Short delay to ensure the progress bar is shown
+      isNavigating.current = false;
+    }, 300);
 
     return () => {
-      clearTimeout(timeoutId); // Clean up timeout on unmount or next navigation
+      clearTimeout(timeoutId);
     };
   }, [pathname, searchParams]);
+
   return null;
 }

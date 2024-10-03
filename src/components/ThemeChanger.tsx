@@ -6,7 +6,7 @@ export default function ThemeChanger() {
   const { theme, setTheme } = useTheme();
 
   return (
-    //@ts-ignore
+    //@ts-expect-error www
     <DarkSide
       className="p-3 hover:bg-accent lg:bg-none rounded-full"
       onToggle={() => {

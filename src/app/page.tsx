@@ -1,10 +1,9 @@
 import CaptionCard from "@/components/CaptionCard";
 import WhoToFollow from "@/components/WhoToFollow";
-import { SignOutButton, UserButton } from "@clerk/nextjs";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 
 export default async function Home() {
-  const { userId }: { userId: string | null } = auth();
+  // const { userId }: { userId: string | null } = auth();
   // console.log(auth());
   const user = await currentUser();
   console.log(user);

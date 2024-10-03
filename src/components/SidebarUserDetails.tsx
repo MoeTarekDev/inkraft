@@ -34,10 +34,8 @@
 //     </Popover>
 //   );
 // }
-import { SignOutButton, UserButton } from "@clerk/nextjs";
-import { Ellipsis, LogOut } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { UserButton } from "@clerk/nextjs";
+import { Ellipsis } from "lucide-react";
 
 export default function SidebarUserDetails() {
   return (

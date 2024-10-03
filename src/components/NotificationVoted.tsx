@@ -1,5 +1,4 @@
 import { ChevronsUpDown } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import CaptionCardMini from "./CaptionCardMini";
 import UserAvatarWithHover from "./UserAvatarWithHover";
 import UserNameWithHover from "./UserNameWithHover";

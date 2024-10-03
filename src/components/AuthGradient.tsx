@@ -4,10 +4,10 @@ export default function AuthGradient() {
       <div className="curved-line"></div>
       <div className="self-end">
         <p className="text-black">
-          "Imagination is more important than knowledge, especially when
+          &quot;Imagination is more important than knowledge, especially when
           crafting the perfect caption. Just remember, if your words are too
           cryptic, users might find themselves lost in a parallel universe of
-          endless confusion."
+          endless confusion.&quot;
         </p>
         <span className="mt-3 block text-muted-foreground text-sm">
           -Albert Einstein

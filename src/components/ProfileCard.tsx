@@ -1,5 +1,4 @@
 import Link from "next/link";
-import FollowUser from "./FollowUser";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 

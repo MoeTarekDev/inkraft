@@ -1,11 +1,4 @@
-import WhoToFollow from "@/components/WhoToFollow";
-import { Ellipsis } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../components/ui/popover";
-import { Button } from "@/components/ui/button";
+import CaptionCard from "@/components/CaptionCard";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,7 +10,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import CaptionCard from "@/components/CaptionCard";
+import WhoToFollow from "@/components/WhoToFollow";
+import { Ellipsis } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "../../components/ui/popover";
 export default function page() {
   return (
     <section className="grid grid-cols-12 w-full sm:pb-5 sm:pr-5 space-x-4">

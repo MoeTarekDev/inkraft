@@ -1,14 +1,10 @@
 import Image from "next/image";
 import profileCover from "../../../public/profileCover.jpg";
 // import placeHolderImage from "../../../public/placeHolderImage.jpg";
+import CaptionCard from "@/components/CaptionCard";
 import EditProfile from "@/components/EditProfile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import CaptionCardMini from "@/components/CaptionCardMini";
-import { Button } from "@/components/ui/button";
-import CaptionCard from "@/components/CaptionCard";
-import { UserButton, UserProfile } from "@clerk/nextjs";
-import EditAccount from "@/components/EditAccount";
 import Link from "next/link";
 
 export default function page() {
@@ -90,10 +86,10 @@ export default function page() {
             className="w-full md:w-[80%] lg:w-[60%] sm:px-5"
           >
             <div className="grid grid-cols-1  place-items-center">
-              <CaptionCard rounded={false} />
-              <CaptionCard rounded={false} />
-              <CaptionCard rounded={false} />
-              <CaptionCard rounded={false} />
+              <CaptionCard rounded={false} singlePostMode={false} />
+              <CaptionCard rounded={false} singlePostMode={false} />
+              <CaptionCard rounded={false} singlePostMode={false} />
+              <CaptionCard rounded={false} singlePostMode={false} />
             </div>
           </TabsContent>
         </Tabs>

@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { currentUser } from "@clerk/nextjs/server";
 import { Bell, Bookmark, House, Pencil, User } from "lucide-react";
 import CreatePost from "./CreatePost";
 import Find from "./Find";
@@ -16,8 +15,6 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 export default async function Sidebar() {
-  const user = await currentUser();
-
   const navLinks = [
     {
       linkIcon: <Bell className="lg:w-5 lg:h-5 w-6 h-6" />,
