@@ -37,7 +37,9 @@ export default function RootLayout({
               <Sidebar />
             </SignedIn>
             <main className="flex w-full min-h-screen bg-background">
-              <div className="container mx-auto">{children}</div>
+              <div className="container mx-auto px-5 flex justify-center items-center">
+                {children}
+              </div>
             </main>
           </ThemeProvider>
         </body>
