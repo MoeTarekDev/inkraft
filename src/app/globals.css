@@ -2,26 +2,325 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
+/* :root {
+  --background: #faf7f2;
   --foreground: #171717;
-}
+} */
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+} */
+html,
+body {
+  min-height: 100%;
 }
-
+@layer utilities {
+  .glass {
+    @apply bg-white bg-opacity-20 backdrop-blur-lg;
+  }
+}
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+
+  /* font-family: Arial, Helvetica, sans-serif,; */
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .caption-card-rounded:last-of-type {
+    border-bottom: 0;
+  }
+  .cl-card {
+    padding-block: 16px;
+    padding-inline: 24px;
+  }
+}
+.caption-card-notification:last-of-type {
+  border-bottom: 0;
+}
+.caption-card-not-rounded:last-of-type {
+  border-bottom: 0;
+}
+/* Curved line style */
+.curved-line {
+  position: absolute;
+  top: 50%;
+  left: -10%;
+  width: 120%;
+  height: 200px;
+  background: none;
+  border-top: 2px solid rgba(255, 255, 255, 0.6); /* White, semi-transparent */
+  border-radius: 100% 100% 0 0;
+  transform: rotate(10deg);
+  opacity: 0.8;
+}
+.cl-rootBox,
+.cl-signIn-root {
+  height: 95%;
+  width: 100%;
+}
+.cl-cardBox,
+.cl-signIn-start {
+  height: 100%;
+  width: 100%;
+  background: var(--card);
+
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+}
+
+.cl-card {
+  height: 100%;
+  width: 100%;
+  background: var(--card);
+
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+}
+.cl-internal-1pr5xvn {
+  justify-items: start;
+  text-align: start;
+}
+.cl-identityPreviewText {
+  color: hsl(var(--foreground));
+}
+.cl-backLink {
+  color: hsl(var(--foreground));
+}
+.cl-formFieldAction {
+  color: hsl(var(--foreground));
+}
+.cl-headerTitle,
+.cl-headerSubtitle {
+  width: fit-content;
+  color: hsl(var(--foreground));
+}
+.cl-socialButtonsBlockButton,
+.cl-button,
+.cl-socialButtonsBlockButton__facebook,
+.cl-button__facebook {
+  background: white;
+}
+.cl-socialButtonsBlockButton:hover,
+.cl-button:hover,
+.cl-socialButtonsBlockButton__facebook:hover,
+.cl-button__facebook:hover {
+  background: hsl(0, 0%, 90%);
+}
+.cl-formFieldLabelRow .cl-formFieldLabelRow__identifier {
+  color: hsl(var(--foreground));
+}
+.cl-dividerText {
+  color: hsl(var(--foreground));
+}
+.cl-formFieldLabel {
+  color: hsl(var(--foreground)) !important;
+}
+.cl-formButtonPrimary {
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground));
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.cl-formButtonPrimary:hover {
+  background-color: hsl(var(--primary) / 0.9) !important;
+}
+.cl-footer {
+  background: var(--card);
+}
+.cl-internal-1dauvpw {
+  display: none;
+}
+.cl-footerActionText {
+  color: hsl(var(--muted-foreground));
+}
+.cl-footerActionLink {
+  color: hsl(var(--foreground));
+}
+.cl-footerActionLink:hover {
+  color: hsl(var(--foreground) / 0.9);
+}
+.cl-rootBox {
+  height: 100%;
+}
+
+/* .cl-navbar {
+  background-color: hsl(var(--card));
+} */
+.cl-actionCard {
+  background-color: hsl(var(--card));
+}
+
+.cl-button {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+.cl-button:hover {
+  background-color: hsl(var(--primary) / 0.9);
+  color: hsl(var(--primary-foreground) / 0.9);
+}
+.cl-avatarImageActionsRemove {
+  color: hsl(var(--destructive));
+}
+.cl-avatarImageActionsRemove:hover {
+  color: hsl(var(--destructive) / 0.9);
+}
+.cl-pageScrollBox {
+  background-color: hsl(var(--card));
+}
+.cl-profileSectionTitleText {
+  color: hsl(var(--card-foreground));
+}
+.cl-internal-3gh7hq {
+  color: hsl(var(--muted-foreground));
+}
+.cl-internal-bolkfx {
+  color: hsl(var(--muted-foreground));
+}
+.cl-internal-1v9xsvw {
+  color: hsl(var(--muted-foreground));
+}
+
+.cl-internal-1pz8pdy {
+  color: hsl(var(--card-foreground));
+}
+.cl-badge {
+  color: hsl(var(--muted-foreground));
+  background-color: hsl(var(--muted));
+}
+.cl-internal-rvg68x {
+  color: hsl(var(--muted-foreground));
+}
+.cl-otpCodeFieldInputs {
+  color: hsl(var(--card-foreground));
+}
+.cl-otpCodeFieldInputs .cl-input {
+  outline-color: hsl(var(--border) / 0.3);
+  color: hsl(var(--card-foreground));
+}
+.cl-formFieldRadioLabelTitle {
+  color: hsl(var(--card-foreground));
+}
+.press-effect {
+  transition: transform 0.2s ease-in-out, box-shadow 0.1s ease-in-out;
+}
+
+.press-effect:active {
+  transform: scale(0.95); /* Scale down slightly */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Change the shadow */
+}
+
+.cl-rootBox .cl-userButton-root {
+  position: relative;
+  width: 100%;
+}
+.cl-userButtonTrigger:focus {
+  border: 0;
+  box-shadow: none;
+}
+.cl-userButtonTrigger {
+  display: inline-block;
+  width: 100%;
+  background-color: transparent;
+  border: 0;
+}
+.cl-userButtonTrigger:hover {
+  background-color: transparent;
+  border: 0;
+}
+.cl-internal-1hp5nqm {
+  display: none;
+}
+#nprogress .bar {
+  background: hsl(var(--primary)); /* YouTube's red color */
+  height: 4px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1031;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px hsl(var(--primary)), 0 0 5px hsl(var(--primary));
+}
+
+#nprogress .spinner-icon {
+  display: none; /* Hide spinner */
 }

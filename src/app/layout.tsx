@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { ClerkProvider, SignedIn } from "@clerk/nextjs";
+import Sidebar from "@/components/Sidebar";
+import { ThemeProvider } from "next-themes";
+import "@theme-toggles/react/css/darkside.css";
+import PageLoader from "@/components/PageLoader";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const brockMann = localFont({
+  src: "../fonts/brockmann-medium-webfont.woff2",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -24,12 +23,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={`${brockMann.className} antialiased flex`}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <PageLoader />
+            <SignedIn>
+              <Sidebar />
+            </SignedIn>
+            <main className="flex w-full min-h-screen bg-background">
+              <div className="container mx-auto">{children}</div>
+            </main>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
