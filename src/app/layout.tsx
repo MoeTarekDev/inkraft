@@ -6,6 +6,8 @@ import Sidebar from "@/components/Sidebar";
 import { ThemeProvider } from "next-themes";
 // import "@theme-toggles/react/css/darkside.css";
 import PageLoader from "@/components/PageLoader";
+import TopBar from "@/components/TopBar";
+import BottomBar from "@/components/BottomBar";
 
 const brockMann = localFont({
   src: "../fonts/brockmann-medium-webfont.woff2",
@@ -34,10 +36,12 @@ export default function RootLayout({
           >
             <PageLoader />
             <SignedIn>
+              <TopBar />
               <Sidebar />
+              <BottomBar />
             </SignedIn>
             <main className="flex w-full min-h-screen bg-background">
-              <div className="container mx-auto px-5 flex justify-center items-center">
+              <div className="container mx-auto flex justify-center items-center  mb-[56px]  sm:mb-0">
                 {children}
               </div>
             </main>

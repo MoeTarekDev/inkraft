@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export default function page() {
   return (
-    <section className="w-full flex flex-col items-center gap-10">
+    <section className="w-full flex flex-col mt-[81px] sm:mt-0 items-center gap-10">
       <div className=" self-stretch">
         <div className="h-[200px] w-full relative">
           <Image

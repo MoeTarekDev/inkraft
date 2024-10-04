@@ -13,10 +13,10 @@ import FollowUser from "./FollowUser";
 export default function Find() {
   return (
     <Dialog>
-      <DialogTrigger className="w-full">
+      <DialogTrigger className="sm:w-full flex justify-center">
         <li
           title="Find"
-          className="p-2 lg:p-3 w-fit mx-auto hover:bg-accent text-accent-foreground rounded-full lg:w-full lg:rounded-md text-lg lg:text-sm cursor-pointer"
+          className="p-2 lg:p-3 w-fit hover:bg-accent text-accent-foreground rounded-full lg:w-full lg:rounded-md text-lg lg:text-sm cursor-pointer"
         >
           <div className="flex lg:p-0 justify-center lg:justify-start items-center gap-0 lg:gap-4">
             <Search className="lg:w-5 lg:h-5 w-6 h-6" />
@@ -24,7 +24,7 @@ export default function Find() {
           </div>
         </li>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] h-[90%] md:h-[382px] overflow-y-scroll p-1">
+      <DialogContent className="sm:max-w-[425px] h-[90%] md:h-[382px] overflow-y-scroll p-1 z-[9999]">
         <DialogHeader>
           <DialogTitle className="hidden">Find people</DialogTitle>
           <DialogDescription className="hidden">

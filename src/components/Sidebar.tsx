@@ -50,7 +50,7 @@ export default async function Sidebar() {
   ];
   return (
     <>
-      <nav className="bg-background sticky top-0 bottom-0 p-2 py-4 lg:p-5 h-screen border-r w-[100px] lg:w-[250px] flex flex-col gap-1 lg:justify-start items-center lg:items-start">
+      <nav className="bg-background hidden sm:flex sticky top-0 bottom-0 p-2 py-4 lg:p-5 h-screen border-r w-[100px] lg:w-[250px]  flex-col gap-1 lg:justify-start items-center lg:items-start">
         <h1 className="bg-primary text-center rounded-md w-10 h-10 lg:ms-1 hover:bg-primary/90 ">
           <Link
             className="text-primary-foreground w-full inline-block p-2 font-bold"
@@ -101,7 +101,7 @@ export default async function Sidebar() {
               <Pencil className="w-5 h-5 lg:hidden" />
             </Button>
           </DialogTrigger>
-          <DialogContent className="overflow-y-auto sm:h-[80%]">
+          <DialogContent className="overflow-y-auto sm:h-[80%] z-[99999]">
             <DialogHeader>
               <DialogTitle className="hidden">Create Post</DialogTitle>
               <DialogDescription className="hidden">

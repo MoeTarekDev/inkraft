@@ -19,7 +19,7 @@ import {
 } from "../../components/ui/popover";
 export default function page() {
   return (
-    <section className="grid grid-cols-12 w-full sm:pb-5 sm:pr-5 space-x-4">
+    <section className="grid grid-cols-12 w-full sm:pr-5 space-x-4">
       <div className="col-span-full lg:col-span-8 flex flex-col border-r relative">
         <div className=" flex items-center justify-between p-5 pb-5 border-b sticky top-0 z-40 bg-card/30 backdrop-blur-md">
           <div className="flex flex-col">

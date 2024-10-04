@@ -20,7 +20,7 @@ export default function EditProfile() {
       <DialogTrigger asChild>
         <Button>Edit Profile</Button>
       </DialogTrigger>
-      <DialogContent className="sm:h-[80%] h-fit overflow-y-auto">
+      <DialogContent className="sm:h-[80%] h-[90%] overflow-y-auto z-[9999]">
         <DialogHeader className="h-fit">
           <DialogTitle>Edit Profile</DialogTitle>
         </DialogHeader>

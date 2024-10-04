@@ -324,3 +324,11 @@ body {
 #nprogress .spinner-icon {
   display: none; /* Hide spinner */
 }
+
+.sign-out-sheet button {
+  width: 100%;
+  display: inline-block;
+  text-align: start;
+  margin-left: 35px;
+  font-size: 18px;
+}

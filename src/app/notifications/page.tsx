@@ -6,7 +6,7 @@ import { CircleCheckBig } from "lucide-react";
 
 export default function page() {
   return (
-    <section className="grid grid-cols-12 w-full sm:pb-5 sm:pr-5 space-x-4">
+    <section className="grid grid-cols-12 w-full mt-[81px] sm:mt-0 sm:pr-5 space-x-4">
       <div className="col-span-full lg:col-span-8 flex flex-col border-r">
         <div className="flex items-center justify-between pb-5 border-b">
           <h3 className="font-bold text-xl p-5">Notifications</h3>

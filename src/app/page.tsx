@@ -10,7 +10,7 @@ export default async function Home() {
 
   return (
     <>
-      <div className="grid grid-cols-12 w-full sm:p-5 space-x-4">
+      <section className="grid grid-cols-12 w-full sm:p-5 space-x-4 mt-[81px] sm:mt-0">
         <div className="col-span-full lg:col-span-8 flex flex-col sm:gap-2 items-center">
           {/* <h1 className="font-semibold text-3xl">Welcome to Inkraft</h1>
           <h2>Hello {userId}</h2>
@@ -26,7 +26,7 @@ export default async function Home() {
         <aside className="col-span-4 hidden lg:block">
           <WhoToFollow />
         </aside>
-      </div>
+      </section>
     </>
   );
 }
