@@ -16,7 +16,7 @@ export default function TopBarSheet() {
   return (
     <Sheet>
       <SheetTrigger>
-        <Avatar className="w-[40px] h-[40px]">
+        <Avatar className="w-[36px] h-[36px]">
           <AvatarImage
             className="w-full h-full"
             src="https://github.com/shadcn.png"

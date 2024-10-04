@@ -1,6 +1,6 @@
 export default function AuthGradient() {
   return (
-    <div className="relative w-1/2 h-full  rounded-2xl overflow-hidden  bg-[radial-gradient(circle,#dff8d5,#d7f3fa)] p-10 hidden md:flex  ">
+    <div className="relative w-1/2 h-full rounded-2xl overflow-hidden bg-[radial-gradient(circle,#dff8d5,#d7f3fa)] p-10 hidden lg:flex  ">
       <div className="curved-line"></div>
       <div className="self-end">
         <p className="text-black">

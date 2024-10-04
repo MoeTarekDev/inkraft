@@ -3,11 +3,9 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ClerkProvider, SignedIn } from "@clerk/nextjs";
 import Sidebar from "@/components/Sidebar";
-import { ThemeProvider } from "next-themes";
-// import "@theme-toggles/react/css/darkside.css";
-import PageLoader from "@/components/PageLoader";
 import TopBar from "@/components/TopBar";
 import BottomBar from "@/components/BottomBar";
+import ProgressProvider from "@/components/ProgressBarProvider";
 
 const brockMann = localFont({
   src: "../fonts/brockmann-medium-webfont.woff2",
@@ -28,13 +26,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={`${brockMann.className} antialiased flex`}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <PageLoader />
+          <ProgressProvider>
             <SignedIn>
               <TopBar />
               <Sidebar />
@@ -45,7 +37,7 @@ export default function RootLayout({
                 {children}
               </div>
             </main>
-          </ThemeProvider>
+          </ProgressProvider>
         </body>
       </html>
     </ClerkProvider>

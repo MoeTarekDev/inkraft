@@ -149,7 +149,7 @@ export default function CaptionCard({
     <article
       className={`${
         rounded
-          ? "caption-card-rounded sm:rounded-lg w-full md:w-[90%] p-3 sm:p-5 sm:border-2"
+          ? "caption-card-rounded sm:rounded-lg w-full md:w-[95%] p-3 sm:p-5 sm:border-2"
           : "w-full p-3 sm:p-5 caption-card-not-rounded"
       }  bg-card   h-fit border-b-2 hover:bg-muted/20 `}
     >

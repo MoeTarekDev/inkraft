@@ -87,7 +87,7 @@ export default async function Sidebar() {
             </li>
           ))}
         </ul>
-        <div className="flex items-center justify-center lg:justify-between  w-full p-3 py-0">
+        <div className="flex items-center justify-center lg:justify-between w-full p-3 py-0">
           <span className="hidden lg:inline-block">Theme</span>
           <ThemeChanger />
         </div>

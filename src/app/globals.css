@@ -332,3 +332,6 @@ body {
   margin-left: 35px;
   font-size: 18px;
 }
+main .container:has(.test-no-margin) {
+  margin-bottom: 0;
+}
