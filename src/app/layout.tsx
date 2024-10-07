@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "@uploadthing/react/styles.css";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ClerkProvider, SignedIn } from "@clerk/nextjs";
@@ -6,7 +7,11 @@ import Sidebar from "@/components/Sidebar";
 import TopBar from "@/components/TopBar";
 import BottomBar from "@/components/BottomBar";
 import ProgressProvider from "@/components/ProgressBarProvider";
-
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "@/app/api/uploadthing/core";
+import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "next-themes";
 const brockMann = localFont({
   src: "../fonts/brockmann-medium-webfont.woff2",
   display: "swap",
@@ -26,18 +31,30 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={`${brockMann.className} antialiased flex`}>
-          <ProgressProvider>
-            <SignedIn>
-              <TopBar />
-              <Sidebar />
-              <BottomBar />
-            </SignedIn>
-            <main className="flex w-full min-h-screen bg-background">
-              <div className="container mx-auto flex justify-center items-center  mb-[56px]  sm:mb-0">
-                {children}
-              </div>
-            </main>
-          </ProgressProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <NextSSRPlugin
+              /**
+               * The `extractRouterConfig` will extract **only** the route configs
+               * from the router to prevent additional information from being
+               * leaked to the client. The data passed to the client is the same
+               * as if you were to fetch `/api/uploadthing` directly.
+               */
+              routerConfig={extractRouterConfig(ourFileRouter)}
+            />
+            <ProgressProvider>
+              <SignedIn>
+                <TopBar />
+                <Sidebar />
+                <BottomBar />
+              </SignedIn>
+              <main className="flex w-full min-h-screen bg-background">
+                <div className="container mx-auto flex justify-center items-center  mb-[56px]  sm:mb-0">
+                  {children}
+                </div>
+              </main>
+              <Toaster />
+            </ProgressProvider>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

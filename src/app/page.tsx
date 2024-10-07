@@ -6,7 +6,7 @@ export default async function Home() {
   // const { userId }: { userId: string | null } = auth();
   // console.log(auth());
   const user = await currentUser();
-  console.log(user);
+  // console.log(user);
 
   return (
     <>

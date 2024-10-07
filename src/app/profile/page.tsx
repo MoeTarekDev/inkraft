@@ -1,6 +1,5 @@
 import Image from "next/image";
-import profileCover from "../../../public/profileCover.jpg";
-// import placeHolderImage from "../../../public/placeHolderImage.jpg";
+import profileCover from "../../../public/default-cover.webp";
 import CaptionCard from "@/components/CaptionCard";
 import EditProfile from "@/components/EditProfile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -11,7 +10,7 @@ export default function page() {
   return (
     <section className="w-full flex flex-col mt-[81px] sm:mt-0 items-center gap-10">
       <div className=" self-stretch">
-        <div className="h-[200px] w-full relative">
+        <div className="h-[300px] w-full relative">
           <Image
             src={profileCover}
             alt="Profile cover"

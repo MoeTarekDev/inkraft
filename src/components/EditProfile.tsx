@@ -1,5 +1,5 @@
 import Image from "next/image";
-import profileCover from "../../public/profileCover.jpg";
+import profileCover from "../../public/default-cover.webp";
 import { Button } from "./ui/button";
 import {
   Dialog,

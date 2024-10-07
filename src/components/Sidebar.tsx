@@ -91,26 +91,7 @@ export default async function Sidebar() {
           <span className="hidden lg:inline-block">Theme</span>
           <ThemeChanger />
         </div>
-        <Dialog>
-          <DialogTrigger asChild className="w-fit lg:w-full">
-            <Button
-              title="Post"
-              className="w-fit press-effect p-2 lg:w-full lg:mt-2 flex items-center justify-center rounded-full lg:rounded-md "
-            >
-              <span className="hidden lg:inline-block ">Post</span>
-              <Pencil className="w-5 h-5 lg:hidden" />
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="overflow-y-auto sm:h-[80%] z-[99999]">
-            <DialogHeader>
-              <DialogTitle className="hidden">Create Post</DialogTitle>
-              <DialogDescription className="hidden">
-                Create a post to reflect your ideas.
-              </DialogDescription>
-            </DialogHeader>
-            <CreatePost />
-          </DialogContent>
-        </Dialog>
+        <CreatePost />
 
         <SidebarUserDetails />
         {/* <SidebarUserDetails>
