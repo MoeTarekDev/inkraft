@@ -30,6 +30,7 @@ export default function BottomBar() {
     }
     setPreviousScrollPos(currentScrollPos);
   };
+  //@ts-ignore www
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {

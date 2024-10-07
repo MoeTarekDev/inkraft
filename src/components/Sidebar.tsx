@@ -1,19 +1,10 @@
 import Link from "next/link";
 
-import { Bell, Bookmark, House, Pencil, User } from "lucide-react";
+import { Bell, Bookmark, House, User } from "lucide-react";
 import CreatePost from "./CreatePost";
 import Find from "./Find";
 import SidebarUserDetails from "./SidebarUserDetails";
 import ThemeChanger from "./ThemeChanger";
-import { Button } from "./ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
 export default async function Sidebar() {
   const navLinks = [
     {

@@ -11,6 +11,7 @@ export default function TopBar() {
 
   const [isVisible, setIsVisible] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
+  //@ts-ignore www
   const handleScroll = () => {
     const currentScrollPos = window.scrollY;
     if (currentScrollPos > prevScrollPos) {

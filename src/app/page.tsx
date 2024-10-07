@@ -1,11 +1,10 @@
 import CaptionCard from "@/components/CaptionCard";
 import WhoToFollow from "@/components/WhoToFollow";
-import { currentUser } from "@clerk/nextjs/server";
 
 export default async function Home() {
   // const { userId }: { userId: string | null } = auth();
   // console.log(auth());
-  const user = await currentUser();
+  // const user = await currentUser();
   // console.log(user);
 
   return (

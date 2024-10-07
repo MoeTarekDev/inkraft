@@ -23,7 +23,7 @@ export default function ImageUploader({
           />
         </div>
       ) : (
-        //@ts-expect-error
+        //@ts-expect-error www
         <UploadDropzone
           endpoint="imageUploader"
           appearance={{

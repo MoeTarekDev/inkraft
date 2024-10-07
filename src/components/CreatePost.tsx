@@ -92,7 +92,9 @@ export default function CreatePost() {
           </div>
           <ImageUploader imageUrl={imageUrl} setImageUrl={setImageUrl} />
           <DialogClose className="self-end">
-            <Button disabled={!thereIsACaption}>Post</Button>
+            <Button asChild disabled={!thereIsACaption}>
+              Post
+            </Button>
           </DialogClose>
         </form>
       </DialogContent>
