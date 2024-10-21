@@ -1,52 +1,85 @@
+import { User } from "@/lib/types";
 import Link from "next/link";
+import FollowButton from "./FollowButton";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
 
-export default function ProfileCard() {
+export default function ProfileCard({
+  user,
+  userId,
+  loggedInUserFollowedUsers,
+  followingCount,
+  followersCount,
+}: {
+  user: User;
+  userId: string;
+  loggedInUserFollowedUsers: any;
+  followingCount: number;
+  followersCount: number;
+}) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 relative z-50">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1">
-          <Link href="/profile">
+          <Link href={`/profile/${user?.clerkUserId}`}>
             <Avatar>
               <AvatarImage
-                src="https://github.com/shadcn.png"
+                src={user?.imageUrl}
                 alt="user image"
                 className="w-9 h-9 rounded-full"
               />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarFallback>
+                {user ? user?.firstName[0] + user?.lastName[0] : "CN"}
+              </AvatarFallback>
             </Avatar>
           </Link>
 
           <div className="flex items-center justify-between">
             <div className="flex flex-col text-xs ">
-              <Link href="/profile" className="font-semibold hover:underline">
-                Moe Tarek
+              <Link
+                href={`/profile/${user?.clerkUserId}`}
+                className="font-semibold hover:underline flex items-center gap-1"
+              >
+                <span>{user?.firstName}</span>
+                <span>{user?.lastName}</span>
               </Link>
-              <Link href="/profile" className="text-muted-foreground">
-                @moetarek
+              <Link
+                href={`/profile/${user?.clerkUserId}`}
+                className="text-muted-foreground"
+              >
+                @{user?.userName}
               </Link>
             </div>
           </div>
         </div>
-        <Button className={"inline-block text-xs cursor-pointer py-1 px-4"}>
-          Follow
-        </Button>
+        {userId != user?.clerkUserId ? (
+          <div>
+            <FollowButton
+              followedId={user?.clerkUserId}
+              followerId={userId}
+              loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+            />
+          </div>
+        ) : null}
       </div>
-      <p className="w-fit text-sm ">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut
-        illum nostrum numquam fugiat eum.
-      </p>
+      <p className="w-fit text-sm ">{user?.bio}</p>
       <div className="flex items-center gap-2">
         <div className="text-sm  hover:underline cursor-pointer">
-          <span className="font-semibold">
-            1.25k <span className="text-muted-foreground">Followers</span>
-          </span>
+          <Link
+            href={`/profile/${user.clerkUserId}/connections/followers`}
+            className="font-semibold"
+          >
+            {followersCount}{" "}
+            <span className="text-muted-foreground">Followers</span>
+          </Link>
         </div>
         <div className="text-sm hover:underline cursor-pointer">
-          <span className="font-semibold">
-            400 <span className="text-muted-foreground">Following</span>
-          </span>
+          <Link
+            href={`/profile/${user.clerkUserId}/connections/following`}
+            className="font-semibold"
+          >
+            {followingCount}{" "}
+            <span className="text-muted-foreground">Following</span>
+          </Link>
         </div>
       </div>
     </div>

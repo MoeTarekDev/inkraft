@@ -2,17 +2,33 @@
 
 import Link from "next/link";
 import ThemeChanger from "./ThemeChanger";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import TopBarSheet from "./TopBarSheet";
 
-export default function TopBar() {
+export default function TopBar({
+  firstName,
+  lastName,
+  userName,
+  userId,
+  myFollowers,
+  followedUsers,
+  userImage,
+}: {
+  firstName: string;
+  lastName: string;
+  userName: string;
+  userId: string;
+  myFollowers: [{ followerId: string }];
+  followedUsers: [{ followedId: string }];
+  userImage: string;
+}) {
   const pathName = usePathname();
 
   const [isVisible, setIsVisible] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
-  //@ts-ignore www
-  const handleScroll = () => {
+
+  const handleScroll = useCallback(() => {
     const currentScrollPos = window.scrollY;
     if (currentScrollPos > prevScrollPos) {
       setIsVisible(false);
@@ -20,13 +36,14 @@ export default function TopBar() {
       setIsVisible(true);
     }
     setPrevScrollPos(currentScrollPos);
-  };
+  }, [prevScrollPos]);
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [prevScrollPos]);
+  }, [handleScroll]);
   return (
     <div
       className={` ${
@@ -39,7 +56,15 @@ export default function TopBar() {
         isVisible ? "translate-y-0" : "-translate-y-full"
       } items-center justify-between sm:hidden border-b`}
     >
-      <TopBarSheet />
+      <TopBarSheet
+        firstName={firstName}
+        lastName={lastName}
+        userName={userName}
+        userId={userId}
+        myFollowers={myFollowers}
+        followedUsers={followedUsers}
+        userImage={userImage}
+      />
       <h1 className="bg-primary text-center rounded-md w-10 h-10 lg:ms-1 hover:bg-primary/90 ">
         <Link
           className="text-primary-foreground w-full inline-block p-2 font-bold"

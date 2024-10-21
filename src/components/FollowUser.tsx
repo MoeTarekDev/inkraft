@@ -1,36 +1,60 @@
+import { User } from "@/lib/types";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import FollowButton from "./FollowButton";
 import UserAvatarWithHover from "./UserAvatarWithHover";
 import UserNameWithHover from "./UserNameWithHover";
 import UserUserNameWithHover from "./UserUserNameWithHover";
 interface FollowUserProps {
   showFollowButton: boolean;
+  user: User;
+  userId: string;
+  loggedInUserFollowedUsers: any;
 }
-export default function FollowUser({ showFollowButton }: FollowUserProps) {
+export default function FollowUser({
+  showFollowButton,
+  user,
+  userId,
+  loggedInUserFollowedUsers,
+}: FollowUserProps) {
   {
     return (
-      <Link
-        href="/profile"
-        className="flex items-center justify-between hover:bg-accent p-3 cursor-pointer"
-      >
-        <div className="flex items-center gap-1">
-          <UserAvatarWithHover />
+      <div className="flex items-center justify-between hover:bg-accent p-3 relative ">
+        <Link
+          className="absolute inset-0 z-10"
+          href={`/profile/${user?.clerkUserId}`}
+        ></Link>
+        <div className="flex items-center flex-1 gap-1">
+          <UserAvatarWithHover
+            user={user}
+            userId={userId}
+            loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+          />
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between ">
             <div className="flex flex-col text-xs ">
-              <UserNameWithHover />
-              <UserUserNameWithHover />
+              <UserNameWithHover
+                user={user}
+                userId={userId}
+                loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+              />
+              <UserUserNameWithHover
+                user={user}
+                userId={userId}
+                loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+              />
             </div>
           </div>
         </div>
-        <Button
-          className={`${
-            showFollowButton ? "inline-block" : "hidden"
-          } text-sm cursor-pointer py-1 px-4`}
-        >
-          Follow
-        </Button>
-      </Link>
+        {showFollowButton && userId != user.clerkUserId ? (
+          <FollowButton
+            followerId={userId}
+            followedId={user?.clerkUserId}
+            loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+          >
+            Follow
+          </FollowButton>
+        ) : null}
+      </div>
     );
   }
 }

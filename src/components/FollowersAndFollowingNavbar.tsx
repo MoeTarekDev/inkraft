@@ -1,15 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 
 export default function FollowersAndFollowingNavbar() {
   const pathName = usePathname();
+  const { userId } = useParams();
 
   return (
     <div className="h-10 mb-2 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground grid w-full grid-cols-2">
       <Link
-        href="/user/followers"
+        href={`/profile/${userId}/connections/followers`}
         className={`${
           pathName.includes("followers")
             ? "bg-background text-foreground shadow-sm"
@@ -19,7 +20,7 @@ export default function FollowersAndFollowingNavbar() {
         Followers
       </Link>
       <Link
-        href="/user/following"
+        href={`/profile/${userId}/connections/following`}
         className={`${
           pathName.includes("following")
             ? "bg-background text-foreground shadow-sm"

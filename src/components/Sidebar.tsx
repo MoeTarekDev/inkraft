@@ -5,7 +5,19 @@ import CreatePost from "./CreatePost";
 import Find from "./Find";
 import SidebarUserDetails from "./SidebarUserDetails";
 import ThemeChanger from "./ThemeChanger";
-export default async function Sidebar() {
+export default async function Sidebar({
+  firstName,
+  lastName,
+  userName,
+  userId,
+  userImage,
+}: {
+  firstName: string;
+  lastName: string;
+  userName: string;
+  userId: string;
+  userImage: string;
+}) {
   const navLinks = [
     {
       linkIcon: <Bell className="lg:w-5 lg:h-5 w-6 h-6" />,
@@ -36,7 +48,7 @@ export default async function Sidebar() {
     {
       linkIcon: <User className="lg:w-5 lg:h-5 w-6 h-6" />,
       linkName: "Profile",
-      linkRef: "/profile",
+      linkRef: `/profile/${userId}`,
     },
   ];
   return (
@@ -78,19 +90,17 @@ export default async function Sidebar() {
             </li>
           ))}
         </ul>
-        <div className="flex items-center justify-center lg:justify-between w-full p-3 py-0">
+        <div className="flex items-center justify-center lg:justify-between w-full p-3 py-2">
           <span className="hidden lg:inline-block">Theme</span>
           <ThemeChanger />
         </div>
-        <CreatePost />
+        <CreatePost showSmallModal={false} userImage={userImage} />
 
-        <SidebarUserDetails />
-        {/* <SidebarUserDetails>
-          <Avatar className="w-9 h-9 lg:w-10 lg:h-10 ">
-            <AvatarImage src={user?.imageUrl} alt="user image" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-        </SidebarUserDetails> */}
+        <SidebarUserDetails
+          firstName={firstName}
+          lastName={lastName}
+          userName={userName}
+        />
       </nav>
     </>
   );

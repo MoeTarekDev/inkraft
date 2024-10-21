@@ -1,33 +1,77 @@
-import {
-  Bookmark,
-  ChevronDown,
-  ChevronUp,
-  CircleEllipsis,
-  Link as LinkIcon,
-  MessageCircleMore,
-  RefreshCcw,
-  Twitter,
-  UserRoundPlus,
-} from "lucide-react";
+import { getRelativeTime } from "@/lib/features";
+import { CommentBigPost, Post } from "@/lib/types";
+import { RefreshCcw } from "lucide-react";
 import Image from "next/image";
-import placeholder from "../../public/sunset.jpg";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import Link from "next/link";
+import CaptionCardMini from "./CaptionCardMini";
+import PostOptions from "./PostOptions";
+import ReplyToPost from "./ReplyToPost";
+import ReplyToPostDialog from "./ReplyToPostDialog";
+import RepostPost from "./RepostPost";
 import UserAvatarWithHover from "./UserAvatarWithHover";
 import UserNameWithHover from "./UserNameWithHover";
 import UserUserNameWithHover from "./UserUserNameWithHover";
-import Link from "next/link";
-import { Button } from "./ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Input } from "./ui/input";
-import CaptionCardMini from "./CaptionCardMini";
-
+import VoteToPost from "./VoteToPost";
 export default function CaptionCard({
   rounded,
   singlePostMode,
+  post,
+  userId,
+  loggedInUserFollowedUsers,
+  bigPost,
+  personalInfo,
+  userImage,
 }: {
   rounded: boolean;
   singlePostMode: boolean;
+  userId: string;
+  post: Post;
+  loggedInUserFollowedUsers: any;
+  bigPost: any;
+  personalInfo: any;
+  userImage: string | null;
 }) {
+  let upVoteCountForNormalMode = null;
+  let downVoteCountForNormalMode = null;
+  let voteCountForNormalMode = null;
+  let upVoteCountForSinglePostMode = null;
+  let downVoteCountForSinglePostMode = null;
+  let voteCountForSinglePostMode = null;
+
+  if (!singlePostMode && post.isRepost && post.original_post) {
+    upVoteCountForNormalMode = post.original_post.postVotes.filter(
+      (vote: { voteType: string }) => vote.voteType === "upvote"
+    );
+    downVoteCountForNormalMode = post.original_post.postVotes.filter(
+      (vote: { voteType: string }) => vote.voteType === "downvote"
+    );
+    voteCountForNormalMode =
+      upVoteCountForNormalMode.length - downVoteCountForNormalMode.length ||
+      null;
+  } else {
+    upVoteCountForNormalMode = post?.postVotes?.filter(
+      (vote: { voteType: string }) => vote.voteType === "upvote"
+    );
+    downVoteCountForNormalMode = post?.postVotes?.filter(
+      (vote: { voteType: string }) => vote.voteType === "downvote"
+    );
+    voteCountForNormalMode =
+      upVoteCountForNormalMode?.length - downVoteCountForNormalMode?.length ||
+      null;
+  }
+
+  if (singlePostMode) {
+    upVoteCountForSinglePostMode = bigPost?.postVotes.filter(
+      (vote: { voteType: string }) => vote.voteType === "upvote"
+    );
+    downVoteCountForSinglePostMode = bigPost?.postVotes.filter(
+      (vote: { voteType: string }) => vote.voteType === "downvote"
+    );
+    voteCountForSinglePostMode =
+      upVoteCountForSinglePostMode.length -
+        downVoteCountForSinglePostMode.length || null;
+  }
+
   if (singlePostMode)
     return (
       <article
@@ -39,203 +83,217 @@ export default function CaptionCard({
       >
         <div className="w-full flex flex-col gap-2 flex-wrap">
           <div className="flex items-center gap-3 ">
-            <UserAvatarWithHover />
-            <div className="flex items-center text-sm lg:flex gap-1 sm:gap-2 flex-wrap">
-              <UserNameWithHover />
-              <UserUserNameWithHover />
-
-              <span className="text-muted-foreground text-xs text-center line-clamp-1">
-                . Just now
-              </span>
-            </div>
-          </div>
-          <p className="text-sm sm:text-base">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sint
-            officiis quod sed beatae neque minus quae fugiat exercitationem,
-            eius architecto.
-          </p>
-          <div className="relative w-full h-[450px] rounded-md">
-            <Image
-              src={placeholder}
-              alt="post image"
-              fill
-              className="object-cover rounded-md"
+            <UserAvatarWithHover
+              user={post?.users}
+              userId={userId}
+              loggedInUserFollowedUsers={loggedInUserFollowedUsers}
             />
+            <div className="flex items-center text-sm lg:flex gap-1 sm:gap-2 flex-wrap">
+              <UserNameWithHover
+                user={post?.users}
+                userId={userId}
+                loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+              />
+              <UserUserNameWithHover
+                user={post?.users}
+                userId={userId}
+                loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+              />
+
+              <div className="text-muted-foreground text-xs text-center line-clamp-1 ">
+                <span className="dot me-1"></span>
+                <span>{getRelativeTime(bigPost?.post?.created_at)}</span>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center justify-between text-xs gap-1 sm:gap-3 mt-2 pb-3 border-b">
-            <div
-              title="Vote"
-              className="border flex items-center gap-1 p-2 flex-1 justify-center rounded-md hover:bg-accent"
-            >
-              <ChevronUp className="hover:bg-primary press-effect hover:text-primary-foreground rounded-full cursor-pointer" />{" "}
-              <span className="cursor-default hidden sm:inline-block">
-                15.9k
-              </span>
-              <ChevronDown className="hover:bg-primary press-effect hover:text-primary-foreground rounded-full cursor-pointer" />
-            </div>
-            <div
-              title="Repost"
-              className="border press-effect h-full flex items-center gap-1 p-2 flex-1 justify-center rounded-md hover:bg-accent cursor-pointer"
-            >
-              <RefreshCcw className="w-4 h-4" />
-              <span className=" hidden sm:inline-block"> Repost</span>
-            </div>
-            <div
-              title="Comment"
-              className="border press-effect h-full flex items-center gap-1 p-2 flex-1 justify-center rounded-md hover:bg-accent cursor-pointer"
-            >
-              <MessageCircleMore className="w-5 h-5" />
-              <span className="hidden sm:inline-block">1.5k</span>
-            </div>
-            <Popover>
-              <PopoverTrigger
-                title="More"
-                className="cursor-pointer hover:bg-accent p-2 rounded-full press-effect"
-              >
-                <CircleEllipsis />
-              </PopoverTrigger>
-              <PopoverContent side="top" className="p-0">
-                <ul className="flex flex-col text-sm">
-                  <li className="p-4 flex items-center gap-2 hover:bg-accent rounded-t-md cursor-pointer">
-                    <UserRoundPlus className="w-5 h-5" />
-                    <span>Add @moetarek</span>
-                  </li>
-                  <li className="p-4 flex items-center gap-2 hover:bg-accent cursor-pointer">
-                    <LinkIcon className="w-5 h-5" />
-                    <span>Copy to Clipboard</span>
-                  </li>
-                  <li className="p-4 flex items-center gap-2 hover:bg-accent cursor-pointer">
-                    <Twitter />
-                    <span>Share post to Twitter</span>
-                  </li>
-                  <li className="p-4 flex items-center gap-2 hover:bg-accent rounded-b-md cursor-pointer">
-                    <Bookmark className="w-5 h-5" />{" "}
-                    <span>Add to Bookmarks</span>
-                  </li>
-                </ul>
-              </PopoverContent>
-            </Popover>
-          </div>
-          <form className="flex flex-col gap-3 mt-3 pb-3 border-b">
-            <div className="flex items-center gap-2">
-              <Link href="/profile" className="w-9 h-9 flex-shrink-0">
-                <Avatar className="w-9 h-9">
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="user image"
-                    className="w-full h-full rounded-full object-cover"
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </Link>
-              <Input
-                type="text"
-                placeholder="Post your reply"
-                className="ring-0 focus-visible:ring-0 border-0  h-fit"
+          <p className="text-sm sm:text-base">{bigPost?.post?.caption}</p>
+          {bigPost?.post?.image ? (
+            <div className="relative w-full h-0 pb-[56.25%] rounded-lg overflow-hidden">
+              <Image
+                //@ts-expect-error nvm
+                src={post?.image}
+                alt="post image"
+                fill
+                className="object-cover rounded-lg"
               />
             </div>
-            <Button className="self-end">Post</Button>
-          </form>
-          <div>
-            <CaptionCardMini singlePostMode={true} />
-            <CaptionCardMini singlePostMode={true} />
-            <CaptionCardMini singlePostMode={true} />
-            <CaptionCardMini singlePostMode={true} />
+          ) : null}
+          <div className="flex items-center justify-between text-xs gap-1 sm:gap-3 mt-2 pb-3 border-b">
+            <VoteToPost
+              singlePostMode={true}
+              postId={post?.id}
+              userId={userId}
+              voteCountForNormalMode={null}
+              voteCountForSinglePostMode={voteCountForSinglePostMode}
+              postVotes={bigPost?.postVotes}
+            />
+            <RepostPost
+              post={post}
+              userId={userId}
+              originalPostId={post.isRepost ? post.original_post?.id : post?.id}
+              repostingUserId={userId}
+              isRepostedByUser={bigPost?.isRepostedByUser}
+            />
+            <ReplyToPostDialog
+              userId={userId}
+              userImage={personalInfo?.imageUrl}
+              bigPost={bigPost}
+              singlePostMode={true}
+              explicitPostId={null}
+            />
+            <PostOptions
+              user={post.isRepost ? post.original_post?.users : post.users}
+              loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+              userId={userId}
+              postId={post.isRepost ? post.original_post?.id : post.id}
+              post={post.isRepost ? post.original_post : post}
+              isPostBookmarkedByUser={bigPost.isBookmarkedByUser}
+            />
+          </div>
+          <ReplyToPost
+            explicitPostId={null}
+            singlePostMode={true}
+            userId={userId}
+            userImage={personalInfo?.imageUrl}
+            bigPost={bigPost}
+          />
+          <div className="flex flex-col gap-7 divide-y">
+            {bigPost?.comments.map((comment: CommentBigPost) => (
+              <CaptionCardMini
+                key={comment?.id}
+                singlePostMode={true}
+                comment={comment}
+                userId={userId}
+                loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+              />
+            ))}
           </div>
         </div>
       </article>
     );
+
   return (
     <article
       className={`${
         rounded
           ? "caption-card-rounded sm:rounded-lg w-full md:w-[95%] p-3 sm:p-5 sm:border-2"
           : "w-full p-3 sm:p-5 caption-card-not-rounded"
-      }  bg-card   h-fit border-b-2 hover:bg-muted/20 `}
+      }  bg-card h-fit border-b-2 hover:bg-muted/40 relative `}
     >
-      <Link href="status/placeholderlink" className=" w-full flex gap-3">
-        <UserAvatarWithHover />
+      <Link
+        href={`/${
+          post.isRepost
+            ? post.original_post?.users.userName
+            : post?.users?.userName
+        }/status/${post.isRepost ? post.original_post?.id : post?.id}`}
+        className="absolute inset-0 z-10"
+      ></Link>
+      {post?.isRepost ? (
+        <div className="flex items-center w-fit text-muted-foreground gap-1 mb-3 text-xs z-20 relative">
+          <RefreshCcw className="w-4 h-4" />
+          <Link
+            href={`/profile/${post.users.clerkUserId}`}
+            className="flex gap-[3px] hover:underline cursor-pointer"
+          >
+            {post.users.firstName} {""}
+            {post.users.lastName}
+            {""} reposted
+          </Link>
+        </div>
+      ) : null}
 
+      <div className="flex gap-3">
+        <UserAvatarWithHover
+          user={post.isRepost ? post.original_post?.users : post?.users}
+          userId={userId}
+          loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+        />
         <div className="w-full flex flex-col gap-2">
           <div className="flex items-center justify-between flex-wrap">
             <div className="flex items-center text-sm lg:flex gap-1 sm:gap-2 flex-wrap">
-              <UserNameWithHover />
-              <UserUserNameWithHover />
+              <UserNameWithHover
+                user={post.isRepost ? post.original_post?.users : post?.users}
+                userId={userId}
+                loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+              />
+              <UserUserNameWithHover
+                user={post.isRepost ? post.original_post?.users : post?.users}
+                userId={userId}
+                loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+              />
 
-              <span className="text-muted-foreground text-xs text-center line-clamp-1">
-                . Just now
-              </span>
+              <div className="text-muted-foreground text-xs text-center line-clamp-1 ">
+                <span className="dot me-1"></span>
+                <span className="">
+                  {getRelativeTime(
+                    post.isRepost
+                      ? post.original_post?.created_at
+                      : post?.created_at
+                  )}
+                </span>
+              </div>
             </div>
           </div>
           <p className="text-sm sm:text-base">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sint
-            officiis quod sed beatae neque minus quae fugiat exercitationem,
-            eius architecto.
+            {post.isRepost ? post.original_post?.caption : post?.caption}
           </p>
-          <div className="relative w-full h-[300px] rounded-md">
-            <Image
-              src={placeholder}
-              alt="post image"
-              fill
-              className="object-cover rounded-md"
+          {post?.image ? (
+            <div className="relative w-full h-0 pb-[56.25%] rounded-lg overflow-hidden">
+              <Image
+                src={post.image}
+                alt="post image"
+                fill
+                className="object-cover rounded-lg"
+              />
+            </div>
+          ) : null}
+          {post?.original_post?.image ? (
+            <div className="relative w-full h-0 pb-[56.25%] rounded-lg overflow-hidden">
+              <Image
+                src={post.original_post?.image}
+                alt="post image"
+                fill
+                className="object-cover rounded-lg"
+              />
+            </div>
+          ) : null}
+
+          <div className="flex items-center justify-between text-xs gap-1 sm:gap-3 mt-2">
+            <VoteToPost
+              voteCountForSinglePostMode={null}
+              singlePostMode={false}
+              postId={post.isRepost ? post.original_post?.id : post?.id}
+              userId={userId}
+              voteCountForNormalMode={voteCountForNormalMode}
+              postVotes={
+                post.isRepost ? post.original_post?.postVotes : post?.postVotes
+              }
+            />
+            <RepostPost
+              post={post}
+              userId={userId}
+              originalPostId={post.isRepost ? post.original_post?.id : post?.id}
+              repostingUserId={userId}
+              isRepostedByUser={false}
+            />
+            <ReplyToPostDialog
+              post={post.isRepost ? post.original_post : post}
+              userId={userId}
+              userImage={userImage}
+              singlePostMode={false}
+              explicitPostId={post.isRepost ? post.original_post?.id : post?.id}
+            />
+            <PostOptions
+              user={post.isRepost ? post.original_post?.users : post.users}
+              loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+              userId={userId}
+              postId={post.isRepost ? post.original_post?.id : post.id}
+              post={post.isRepost ? post.original_post : post}
+              isPostBookmarkedByUser={post.isBookmarkedByUser}
             />
           </div>
-          <div className="flex items-center justify-between text-xs gap-1 sm:gap-3 mt-2">
-            <div
-              title="Vote"
-              className="border flex items-center gap-1 p-2 flex-1 justify-center rounded-md hover:bg-accent"
-            >
-              <ChevronUp className="hover:bg-primary press-effect hover:text-primary-foreground rounded-full cursor-pointer" />{" "}
-              <span className="cursor-default hidden sm:inline-block">
-                15.9k
-              </span>
-              <ChevronDown className="hover:bg-primary press-effect hover:text-primary-foreground rounded-full cursor-pointer" />
-            </div>
-            <div
-              title="Repost"
-              className="border press-effect h-full flex items-center gap-1 p-2 flex-1 justify-center rounded-md hover:bg-accent cursor-pointer"
-            >
-              <RefreshCcw className="w-4 h-4" />
-              <span className=" hidden sm:inline-block"> Repost</span>
-            </div>
-            <div
-              title="Comment"
-              className="border press-effect h-full flex items-center gap-1 p-2 flex-1 justify-center rounded-md hover:bg-accent cursor-pointer"
-            >
-              <MessageCircleMore className="w-5 h-5" />
-              <span className="hidden sm:inline-block">1.5k</span>
-            </div>
-            <Popover>
-              <PopoverTrigger
-                title="More"
-                className="cursor-pointer hover:bg-accent p-2 rounded-full press-effect"
-              >
-                <CircleEllipsis />
-              </PopoverTrigger>
-              <PopoverContent side="top" className="p-0">
-                <ul className="flex flex-col text-sm">
-                  <li className="p-4 flex items-center gap-2 hover:bg-accent rounded-t-md cursor-pointer">
-                    <UserRoundPlus className="w-5 h-5" />
-                    <span>Add @moetarek</span>
-                  </li>
-                  <li className="p-4 flex items-center gap-2 hover:bg-accent cursor-pointer">
-                    <LinkIcon className="w-5 h-5" />
-                    <span>Copy to Clipboard</span>
-                  </li>
-                  <li className="p-4 flex items-center gap-2 hover:bg-accent cursor-pointer">
-                    <Twitter />
-                    <span>Share post to Twitter</span>
-                  </li>
-                  <li className="p-4 flex items-center gap-2 hover:bg-accent rounded-b-md cursor-pointer">
-                    <Bookmark className="w-5 h-5" />{" "}
-                    <span>Add to Bookmarks</span>
-                  </li>
-                </ul>
-              </PopoverContent>
-            </Popover>
-          </div>
         </div>
-      </Link>
+      </div>
     </article>
   );
 }
