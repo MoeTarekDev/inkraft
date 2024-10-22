@@ -1,26 +1,9 @@
 import CaptionCard from "@/components/CaptionCard";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import DeleteAllBookmarks from "@/components/DeleteAllBookmarks";
 import WhoToFollow from "@/components/WhoToFollow";
-import { Ellipsis } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../components/ui/popover";
+import { Post } from "@/lib/types";
 import { getFollowedUsers, getUserBookmarkedPosts } from "@/lib/users";
 import { currentUser } from "@clerk/nextjs/server";
-import { Post } from "@/lib/types";
-import DeleteAllBookmarks from "@/components/DeleteAllBookmarks";
 export default async function page() {
   const info: any = await currentUser();
   const bookmarkedPosts: any = await getUserBookmarkedPosts(info?.id);

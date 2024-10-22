@@ -70,7 +70,8 @@ export default function TopBar({
           className="text-primary-foreground w-full inline-block p-2 font-bold"
           href="/"
         >
-          IK
+          ik
+          <span className=" ms-[2px] inline-block w-2 h-2 bg-primary rounded-full"></span>
         </Link>
       </h1>
       <ThemeChanger />

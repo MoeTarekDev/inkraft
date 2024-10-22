@@ -1,7 +1,6 @@
-import { User } from "@/lib/types";
+import Link from "next/link";
 import ProfileCard from "./ProfileCard";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card";
-import Link from "next/link";
 
 export default function UserNameWithHover({
   user,

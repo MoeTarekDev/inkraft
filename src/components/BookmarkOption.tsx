@@ -21,7 +21,9 @@ export default function BookmarkOption({
       toast({
         description: "Post added to Bookmarks.",
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
   async function handleRemoveBookmark() {
     try {
@@ -30,7 +32,9 @@ export default function BookmarkOption({
       toast({
         description: "Post removed from Bookmarks.",
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

@@ -56,7 +56,7 @@ export default function RepostPost({
         ? true
         : post.isRepostedByUser || isRepostedByUser
     );
-  }, [post]);
+  }, [post, isRepostedByUser, userId]);
   return (
     <>
       {!didUserRepost ? (

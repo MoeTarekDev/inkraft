@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-//@ts-expect-error www
 import NProgress from "nprogress";
 
 NProgress.configure({ showSpinner: false });

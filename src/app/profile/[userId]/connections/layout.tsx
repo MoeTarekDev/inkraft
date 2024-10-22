@@ -1,7 +1,6 @@
 import FollowersAndFollowingNavbar from "@/components/FollowersAndFollowingNavbar";
 import WhoToFollow from "@/components/WhoToFollow";
 import { getUser } from "@/lib/users";
-import { currentUser } from "@clerk/nextjs/server";
 
 export default async function Layout({
   children,

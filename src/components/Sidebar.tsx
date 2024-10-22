@@ -1,8 +1,9 @@
 import Link from "next/link";
 
-import { Bell, Bookmark, House, User } from "lucide-react";
+import { Bookmark, House, User } from "lucide-react";
 import CreatePost from "./CreatePost";
 import Find from "./Find";
+import NotificationLinkAndCount from "./NotificationLinkAndCount";
 import SidebarUserDetails from "./SidebarUserDetails";
 import ThemeChanger from "./ThemeChanger";
 export default async function Sidebar({
@@ -11,19 +12,16 @@ export default async function Sidebar({
   userName,
   userId,
   userImage,
+  unreadNotificationsCount,
 }: {
   firstName: string;
   lastName: string;
   userName: string;
   userId: string;
   userImage: string;
+  unreadNotificationsCount: number;
 }) {
   const navLinks = [
-    {
-      linkIcon: <Bell className="lg:w-5 lg:h-5 w-6 h-6" />,
-      linkName: "Notifications",
-      linkRef: "/notifications",
-    },
     // {
     //   linkIcon: <Mail className="lg:w-5 lg:h-5 w-6 h-6" />,
     //   linkName: "Messages",
@@ -54,18 +52,16 @@ export default async function Sidebar({
   return (
     <>
       <nav className="bg-background hidden sm:flex sticky top-0 bottom-0 p-2 py-4 lg:p-5 h-screen border-r w-[100px] lg:w-[250px]  flex-col gap-1 lg:justify-start items-center lg:items-start">
-        <h1 className="bg-primary text-center rounded-md w-10 h-10 lg:ms-1 hover:bg-primary/90 ">
-          <Link
-            className="text-primary-foreground w-full inline-block p-2 font-bold"
-            href="/"
-          >
-            IK
+        <h1 className=" text-center self-center lg:self-start lg:ms-[12px] text-foreground">
+          <Link className="w-full inline-block font-bold text-4xl" href="/">
+            ik
+            <span className=" ms-[2px] inline-block w-2 h-2 bg-primary rounded-full"></span>
           </Link>
         </h1>
         <ul className="py-2 pb-0 lg:py-0 mt-0 lg:mt-3  flex flex-col items-center lg:items-start  gap-3 lg:gap-0 w-full">
-          <li className="p-2 lg:p-3 hover:bg-accent text-accent-foreground rounded-full w-fit lg:w-full lg:rounded-md text-lg lg:text-sm cursor-pointer">
+          <li className=" hover:bg-accent text-accent-foreground rounded-full w-fit lg:w-full lg:rounded-md text-lg lg:text-sm cursor-pointer">
             <Link
-              className="flex lg:p-0 justify-center lg:justify-start items-center gap-0 lg:gap-4"
+              className="flex p-2 lg:p-3 justify-center lg:justify-start items-center gap-0 lg:gap-4"
               href="/"
               title="Home"
             >
@@ -74,14 +70,18 @@ export default async function Sidebar({
             </Link>
           </li>
           <Find />
+          <NotificationLinkAndCount
+            isBottomBarActivated={false}
+            unreadNotificationsCount={unreadNotificationsCount}
+          />
           {navLinks.map((link, index) => (
             <li
               key={index}
-              className="p-2 lg:p-3 hover:bg-accent text-accent-foreground rounded-full w-fit lg:w-full lg:rounded-md text-lg lg:text-sm cursor-pointer"
+              className="hover:bg-accent text-accent-foreground rounded-full w-fit lg:w-full lg:rounded-md text-lg lg:text-sm cursor-pointer"
             >
               <Link
                 title={link.linkName}
-                className="flex lg:p-0 justify-center lg:justify-start items-center gap-0 lg:gap-4"
+                className="flex p-2 lg:p-3  justify-center lg:justify-start items-center gap-0 lg:gap-4"
                 href={link.linkRef}
               >
                 {link.linkIcon}

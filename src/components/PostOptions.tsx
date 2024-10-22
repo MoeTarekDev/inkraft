@@ -1,11 +1,11 @@
 "use client";
-import { Bookmark, CircleEllipsis, Twitter } from "lucide-react";
+import { CircleEllipsis, Twitter } from "lucide-react";
+import { useEffect, useState } from "react";
+import BookmarkOption from "./BookmarkOption";
 import CopyOption from "./CopyOption";
 import DeletePostOption from "./DeletePostOption";
 import FollowOption from "./FollowOption";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { useEffect, useState } from "react";
-import BookmarkOption from "./BookmarkOption";
 
 export default function PostOptions({
   loggedInUserFollowedUsers,

@@ -361,6 +361,12 @@ main .container:has(.test-no-margin) {
   background-color: hsl(var(--muted-foreground));
   display: inline-block;
 }
+.unread {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #dc2626;
+}
 .CollapsibleContent {
   overflow: hidden;
   transition: all;

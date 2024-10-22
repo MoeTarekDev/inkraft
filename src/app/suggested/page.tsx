@@ -1,12 +1,13 @@
 import FollowUser from "@/components/FollowUser";
-import WhoToFollow from "@/components/WhoToFollow";
 import { User } from "@/lib/types";
-import { whoToFollow } from "@/lib/users";
+import { getFollowedUsers, whoToFollow } from "@/lib/users";
 import { auth } from "@clerk/nextjs/server";
 
 export default async function page() {
   const { userId }: any = auth();
   const users = await whoToFollow(userId);
+  const loggedInUserFollowedUsers: any = await getFollowedUsers(userId);
+
   return (
     <>
       <section className="grid grid-cols-12 w-full mt-[82px] sm:mt-0 space-x-4 self-start">
@@ -23,6 +24,7 @@ export default async function page() {
                 showFollowButton={true}
                 user={user}
                 userId={userId}
+                loggedInUserFollowedUsers={loggedInUserFollowedUsers}
               />
             ))}
           </div>

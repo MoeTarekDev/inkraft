@@ -1,4 +1,5 @@
 "use client";
+import { sendNotification } from "@/lib/actions";
 import { addVote, deleteVote, updateVote } from "@/lib/users";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
@@ -9,13 +10,15 @@ export default function VoteToPost({
   voteCountForNormalMode,
   voteCountForSinglePostMode,
   postVotes,
+  receiverId,
 }: {
   singlePostMode: boolean;
   postId: any;
   userId: string;
-  voteCountForNormalMode: number | null;
-  voteCountForSinglePostMode: number | null;
+  voteCountForNormalMode: any;
+  voteCountForSinglePostMode: any;
   postVotes: any;
+  receiverId: any;
 }) {
   async function handleUpVote() {
     const voteData = {
@@ -24,6 +27,9 @@ export default function VoteToPost({
       voteType: "upvote",
     };
     await addVote(voteData);
+    if (userId !== receiverId) {
+      await sendNotification(receiverId, userId, "vote", postId);
+    }
   }
   async function handleDownVote() {
     const voteData = {
@@ -32,6 +38,9 @@ export default function VoteToPost({
       voteType: "downvote",
     };
     await addVote(voteData);
+    if (userId !== receiverId) {
+      await sendNotification(receiverId, userId, "vote", postId);
+    }
   }
   const didIUpVote = postVotes.filter(
     (vote: { userId: string; voteType: string }) =>

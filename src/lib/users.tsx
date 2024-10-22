@@ -15,7 +15,7 @@ export async function createUser(user: any) {
 
 export async function getUser(Id: string | null) {
   "use client";
-  let { data: users, error } = await supabase
+  const { data: users, error } = await supabase
     .from("users")
     .select("*")
     .eq("clerkUserId", Id);
@@ -118,7 +118,7 @@ export async function getUserFullPostData(Id: string | null) {
   //@ts-expect-error nvm
   return [...newData];
 }
-export async function getFollowedUsers(Id: string | null) {
+export async function getFollowedUsers(Id: string | null | undefined) {
   const { data, error } = await supabase
     .from("followers")
     .select("followedId")
@@ -159,7 +159,7 @@ export async function getFollowedUsersInfo(Id: string | null) {
 
   return [...followings];
 }
-export async function getUserFollowers(Id: string | null) {
+export async function getUserFollowers(Id: string | null | undefined) {
   const { data, error } = await supabase
     .from("followers")
     .select("followerId")
@@ -267,7 +267,7 @@ export async function allUsersExceptMe(Id: string | null) {
 }
 
 export async function followUser(followerId: string, followedId: string) {
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("followers")
     .insert([{ followerId: followerId, followedId: followedId }]);
   if (error) console.log(error);
@@ -277,7 +277,7 @@ export async function followUser(followerId: string, followedId: string) {
 }
 
 export async function unFollowUser(followerId: string, followedId: string) {
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("followers")
     .delete()
     .eq("followerId", followerId)
@@ -350,7 +350,7 @@ export async function getFollowedUsersPostsAndReposts(loggedInUserId: string) {
     )
   `
     )
-    //@ts-expect-error
+    //@ts-expect-error nvm
     .in("userId", followedUserIds)
     .order("created_at", { ascending: false });
 
@@ -713,4 +713,49 @@ export async function deleteAllBookmarks(userId: string) {
 
   revalidatePath("/bookmarks");
   revalidatePath("/profile/[userId]", "page");
+}
+export async function fetchNotificationsForUser(userId: string | undefined) {
+  const { data, error } = await supabase
+    .from("notifications")
+    .select(
+      `
+    id,
+    created_at,
+    read,
+    type,
+    users:senderId  (
+      firstName,
+      lastName,
+      userName,
+      clerkUserId,
+      imageUrl,
+      followers:followers!followers_followedId_fkey(id),
+      following:followers!followers_followerId_fkey(id)
+    ),
+    posts (
+      id,
+      caption,
+      image,
+      created_at,
+      users:userId (
+        firstName,
+        clerkUserId,
+        lastName,
+        userName,
+        imageUrl,
+        followers:followers!followers_followedId_fkey(id),
+        following:followers!followers_followerId_fkey(id)
+      )
+    )
+  `
+    )
+    .eq("userId", userId)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching notifications:", error);
+    return null;
+  }
+
+  return data;
 }

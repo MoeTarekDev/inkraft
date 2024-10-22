@@ -12,6 +12,8 @@ import UserAvatarWithHover from "./UserAvatarWithHover";
 import UserNameWithHover from "./UserNameWithHover";
 import UserUserNameWithHover from "./UserUserNameWithHover";
 import VoteToPost from "./VoteToPost";
+import CaptionCardImage from "./CaptionCardImage";
+
 export default function CaptionCard({
   rounded,
   singlePostMode,
@@ -31,30 +33,37 @@ export default function CaptionCard({
   personalInfo: any;
   userImage: string | null;
 }) {
-  let upVoteCountForNormalMode = null;
-  let downVoteCountForNormalMode = null;
-  let voteCountForNormalMode = null;
-  let upVoteCountForSinglePostMode = null;
-  let downVoteCountForSinglePostMode = null;
-  let voteCountForSinglePostMode = null;
+  let upVoteCountForNormalMode = [];
+  let downVoteCountForNormalMode = [];
+  let voteCountForNormalMode = [];
+  let upVoteCountForSinglePostMode = [];
+  let downVoteCountForSinglePostMode = [];
+  let voteCountForSinglePostMode = [];
 
   if (!singlePostMode && post.isRepost && post.original_post) {
+    //@ts-expect-error nvm
     upVoteCountForNormalMode = post.original_post.postVotes.filter(
       (vote: { voteType: string }) => vote.voteType === "upvote"
     );
+    //@ts-expect-error nvm
     downVoteCountForNormalMode = post.original_post.postVotes.filter(
       (vote: { voteType: string }) => vote.voteType === "downvote"
     );
+    //@ts-expect-error nvm
+
     voteCountForNormalMode =
       upVoteCountForNormalMode.length - downVoteCountForNormalMode.length ||
       null;
   } else {
+    //@ts-expect-error nvm
     upVoteCountForNormalMode = post?.postVotes?.filter(
       (vote: { voteType: string }) => vote.voteType === "upvote"
     );
+    //@ts-expect-error nvm
     downVoteCountForNormalMode = post?.postVotes?.filter(
       (vote: { voteType: string }) => vote.voteType === "downvote"
     );
+    //@ts-expect-error nvm
     voteCountForNormalMode =
       upVoteCountForNormalMode?.length - downVoteCountForNormalMode?.length ||
       null;
@@ -67,6 +76,7 @@ export default function CaptionCard({
     downVoteCountForSinglePostMode = bigPost?.postVotes.filter(
       (vote: { voteType: string }) => vote.voteType === "downvote"
     );
+    //@ts-expect-error nvm
     voteCountForSinglePostMode =
       upVoteCountForSinglePostMode.length -
         downVoteCountForSinglePostMode.length || null;
@@ -79,7 +89,7 @@ export default function CaptionCard({
           rounded
             ? "caption-card-rounded sm:rounded-lg w-full md:w-[90%] p-3 sm:p-5 sm:border-2"
             : "w-full p-3 sm:p-5 caption-card-not-rounded"
-        }  bg-card  h-fit border-b-2`}
+        }  bg-card h-fit border-b-2`}
       >
         <div className="w-full flex flex-col gap-2 flex-wrap">
           <div className="flex items-center gap-3 ">
@@ -108,15 +118,15 @@ export default function CaptionCard({
           </div>
           <p className="text-sm sm:text-base">{bigPost?.post?.caption}</p>
           {bigPost?.post?.image ? (
-            <div className="relative w-full h-0 pb-[56.25%] rounded-lg overflow-hidden">
+            <CaptionCardImage postImage={post.image}>
               <Image
                 //@ts-expect-error nvm
-                src={post?.image}
+                src={post.image}
                 alt="post image"
                 fill
                 className="object-cover rounded-lg"
               />
-            </div>
+            </CaptionCardImage>
           ) : null}
           <div className="flex items-center justify-between text-xs gap-1 sm:gap-3 mt-2 pb-3 border-b">
             <VoteToPost
@@ -126,6 +136,7 @@ export default function CaptionCard({
               voteCountForNormalMode={null}
               voteCountForSinglePostMode={voteCountForSinglePostMode}
               postVotes={bigPost?.postVotes}
+              receiverId={post?.users.clerkUserId}
             />
             <RepostPost
               post={post}
@@ -140,6 +151,11 @@ export default function CaptionCard({
               bigPost={bigPost}
               singlePostMode={true}
               explicitPostId={null}
+              receiverId={
+                post.isRepost
+                  ? post.original_post?.users.clerkUserId
+                  : post?.users.clerkUserId
+              }
             />
             <PostOptions
               user={post.isRepost ? post.original_post?.users : post.users}
@@ -156,6 +172,11 @@ export default function CaptionCard({
             userId={userId}
             userImage={personalInfo?.imageUrl}
             bigPost={bigPost}
+            receiverId={
+              post.isRepost
+                ? post.original_post?.users.clerkUserId
+                : post?.users.clerkUserId
+            }
           />
           <div className="flex flex-col gap-7 divide-y">
             {bigPost?.comments.map((comment: CommentBigPost) => (
@@ -165,6 +186,7 @@ export default function CaptionCard({
                 comment={comment}
                 userId={userId}
                 loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+                notification={null}
               />
             ))}
           </div>
@@ -238,24 +260,24 @@ export default function CaptionCard({
             {post.isRepost ? post.original_post?.caption : post?.caption}
           </p>
           {post?.image ? (
-            <div className="relative w-full h-0 pb-[56.25%] rounded-lg overflow-hidden">
+            <CaptionCardImage postImage={post.image}>
               <Image
                 src={post.image}
                 alt="post image"
                 fill
                 className="object-cover rounded-lg"
               />
-            </div>
+            </CaptionCardImage>
           ) : null}
           {post?.original_post?.image ? (
-            <div className="relative w-full h-0 pb-[56.25%] rounded-lg overflow-hidden">
+            <CaptionCardImage postImage={post.original_post?.image}>
               <Image
                 src={post.original_post?.image}
                 alt="post image"
                 fill
                 className="object-cover rounded-lg"
               />
-            </div>
+            </CaptionCardImage>
           ) : null}
 
           <div className="flex items-center justify-between text-xs gap-1 sm:gap-3 mt-2">
@@ -267,6 +289,11 @@ export default function CaptionCard({
               voteCountForNormalMode={voteCountForNormalMode}
               postVotes={
                 post.isRepost ? post.original_post?.postVotes : post?.postVotes
+              }
+              receiverId={
+                post.isRepost
+                  ? post.original_post?.users.clerkUserId
+                  : post?.users.clerkUserId
               }
             />
             <RepostPost
@@ -282,6 +309,11 @@ export default function CaptionCard({
               userImage={userImage}
               singlePostMode={false}
               explicitPostId={post.isRepost ? post.original_post?.id : post?.id}
+              receiverId={
+                post.isRepost
+                  ? post.original_post?.users.clerkUserId
+                  : post?.users.clerkUserId
+              }
             />
             <PostOptions
               user={post.isRepost ? post.original_post?.users : post.users}

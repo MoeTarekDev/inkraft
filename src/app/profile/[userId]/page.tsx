@@ -1,6 +1,5 @@
 import CaptionCard from "@/components/CaptionCard";
 import FollowButton from "@/components/FollowButton";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Post } from "@/lib/types";
 import {
@@ -10,11 +9,13 @@ import {
   getUserFollowers,
   getUserFullPostData,
 } from "@/lib/users";
-import { currentUser } from "@clerk/nextjs/server";
-import Image from "next/image";
-import Link from "next/link";
-import profileCover from "../../../../public/default-cover.webp";
+
 import EditBio from "@/components/EditBio";
+import ProfilePageAvatarImage from "@/components/ProfilePageAvatarImage";
+import { currentUser } from "@clerk/nextjs/server";
+import Link from "next/link";
+import ProfilePageCoverImage from "@/components/ProfilePageCoverImage";
+
 export default async function page({ params }: any) {
   const info: any = await currentUser();
   const { userId } = params;
@@ -29,23 +30,8 @@ export default async function page({ params }: any) {
     <section className="w-full flex flex-col mt-[81px] sm:mt-0 items-center gap-10">
       <div className=" self-stretch">
         <div className="h-[300px] w-full relative">
-          <Image
-            src={profileCover}
-            alt="Profile cover"
-            fill
-            className="object-cover"
-          />
-          <Avatar className="w-28 h-28 left-1/2 top-full -translate-y-1/2 -translate-x-1/2">
-            <AvatarImage
-              src={userBaseInfo && userBaseInfo[0].imageUrl}
-              alt="user image"
-            />
-            <AvatarFallback>
-              {userBaseInfo &&
-                userBaseInfo[0] &&
-                userBaseInfo[0].firstName[0] + userBaseInfo[0].lastName[0]}
-            </AvatarFallback>
-          </Avatar>
+          <ProfilePageCoverImage userBaseInfo={userBaseInfo} />
+          <ProfilePageAvatarImage userBaseInfo={userBaseInfo} />
         </div>
         <div className="mt-20 flex flex-col gap-2 items-center">
           <div className="flex flex-col items-center">

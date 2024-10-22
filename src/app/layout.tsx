@@ -1,19 +1,23 @@
-import type { Metadata } from "next";
-import "@uploadthing/react/styles.css";
-import localFont from "next/font/local";
-import "./globals.css";
-import { ClerkProvider, SignedIn } from "@clerk/nextjs";
-import Sidebar from "@/components/Sidebar";
-import TopBar from "@/components/TopBar";
+import { ourFileRouter } from "@/app/api/uploadthing/core";
 import BottomBar from "@/components/bottomBar";
 import ProgressProvider from "@/components/ProgressBarProvider";
-import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
-import { extractRouterConfig } from "uploadthing/server";
-import { ourFileRouter } from "@/app/api/uploadthing/core";
+import Sidebar from "@/components/Sidebar";
+import TopBar from "@/components/TopBar";
 import { Toaster } from "@/components/ui/toaster";
-import { ThemeProvider } from "next-themes";
+import {
+  fetchNotificationsForUser,
+  getFollowedUsers,
+  getUserFollowers,
+} from "@/lib/users";
+import { ClerkProvider, SignedIn } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
-import { getFollowedUsers, getUserFollowers } from "@/lib/users";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import "@uploadthing/react/styles.css";
+import type { Metadata } from "next";
+import { ThemeProvider } from "next-themes";
+import localFont from "next/font/local";
+import { extractRouterConfig } from "uploadthing/server";
+import "./globals.css";
 const brockMann = localFont({
   src: "../fonts/brockmann-medium-webfont.woff2",
   display: "swap",
@@ -32,6 +36,13 @@ export default async function RootLayout({
   const info: any = await currentUser();
   const followedUsers: any = await getFollowedUsers(info?.id);
   const myFollowers: any = await getUserFollowers(info?.id);
+  const notifications = await fetchNotificationsForUser(info?.id);
+
+  const unreadNotificationsCount =
+    notifications?.filter((notification) => {
+      return notification.read === false;
+    }).length || 0;
+
   return (
     <ClerkProvider>
       <html lang="en">
@@ -63,8 +74,11 @@ export default async function RootLayout({
                   userName={info?.username}
                   userId={info?.id}
                   userImage={info?.imageUrl}
+                  unreadNotificationsCount={unreadNotificationsCount}
                 />
-                <BottomBar />
+                <BottomBar
+                  unreadNotificationsCount={unreadNotificationsCount}
+                />
               </SignedIn>
               <main className="flex w-full min-h-screen bg-background">
                 <div className="container mx-auto flex justify-center items-center  mb-[56px]  sm:mb-0">

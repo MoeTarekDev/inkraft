@@ -1,8 +1,8 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
-import { supabase } from "./supabase";
 import { revalidatePath } from "next/cache";
+import { supabase } from "./supabase";
 
 export async function createPost(postData) {
   const { userId } = auth();
@@ -46,7 +46,7 @@ export async function deletePost(userId, postId) {
 }
 
 export async function addToBookmarks(userId, postId) {
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("bookmarks")
     .insert([{ userId: userId, postId: postId }])
     .select();
@@ -69,16 +69,60 @@ export async function removeFromBookmarks(userId, postId) {
   revalidatePath("/", "page");
 }
 export async function addBio(bioData) {
-  const { bio } = bioData;
-  const { userId } = bioData;
+  const { bio, userId } = bioData;
+  if (bio === null || bio.trim() === "") {
+    console.log("Bio cannot be empty");
+    return;
+  }
+
   const { data, error } = await supabase
     .from("users")
-    .update({ bio: bio })
+    .update({ bio })
     .eq("clerkUserId", userId);
+
+  if (error) {
+    console.error("Error updating bio:", error);
+    return;
+  }
+
+  console.log("Bio updated:", data);
+  revalidatePath(`/profile/${userId}`);
+}
+export async function sendNotification(userId, senderId, type, postId) {
+  const list = {
+    userId,
+    senderId,
+    type,
+    postId,
+  };
+  const { error } = await supabase
+    .from("notifications")
+    .insert([list])
+    .select();
+
+  if (error) console.log(error);
+}
+export async function readNotification(userId, notificationId) {
+  const { error } = await supabase
+    .from("notifications")
+    .update({ read: true })
+    .eq("userId", userId)
+    .eq("id", notificationId);
+
   if (error) {
     console.log(error);
   }
-  console.log(data);
+  // revalidateTag("notifications");
+  // revalidatePath("/notifications", "page");
+}
+export async function readAllNotifications(userId) {
+  const { error } = await supabase
+    .from("notifications")
+    .update({ read: true })
+    .eq("userId", userId);
 
-  revalidatePath("/profile/[userId]", "page");
+  if (error) {
+    console.log(error);
+  }
+  revalidatePath("/", "page");
 }

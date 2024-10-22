@@ -17,6 +17,7 @@ export default function ReplyToPostDialog({
   userImage,
   singlePostMode,
   explicitPostId,
+  receiverId,
 }: any) {
   if (singlePostMode) {
     return (
@@ -82,6 +83,7 @@ export default function ReplyToPostDialog({
                 userId={userId}
                 userImage={userImage}
                 bigPost={bigPost}
+                receiverId={receiverId}
               />
             </div>
           </DialogContent>
@@ -150,6 +152,7 @@ export default function ReplyToPostDialog({
               userId={userId}
               userImage={userImage}
               bigPost={bigPost}
+              receiverId={receiverId}
             />
           </div>
         </DialogContent>

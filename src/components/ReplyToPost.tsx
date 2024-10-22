@@ -9,19 +9,21 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { useState } from "react";
-import { addComment } from "@/lib/actions";
+import { addComment, sendNotification } from "@/lib/actions";
 export default function ReplyToPost({
   singlePostMode,
   userId,
   explicitPostId,
   userImage,
   bigPost,
+  receiverId,
 }: {
   singlePostMode: boolean;
   explicitPostId: string | null;
   userId: string;
   userImage: string;
   bigPost: any;
+  receiverId: any;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState("");
@@ -38,9 +40,19 @@ export default function ReplyToPost({
     };
 
     await addComment(commentData);
+    if (userId !== receiverId) {
+      await sendNotification(
+        receiverId,
+        userId,
+        "comment",
+        bigPost?.post?.id ?? explicitPostId
+      );
+    }
     (e.target as HTMLFormElement).reset();
     setValue("");
   }
+  // console.log(userId, receiverId, explicitPostId);
+
   if (singlePostMode) {
     return (
       <>
@@ -121,7 +133,7 @@ export default function ReplyToPost({
             className="ring-0 focus-visible:ring-0 border-0 text-base"
           />
         </div>
-        <div className="self-end">
+        <div className="self-end press-effect">
           <Button disabled={value.length > 0 ? false : true}>Reply</Button>
         </div>
       </form>

@@ -59,19 +59,13 @@
 //   );
 // }
 "use client";
-import React, { useState } from "react";
-import { Button } from "./ui/button";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { Textarea } from "./ui/textarea";
 import { addBio } from "@/lib/actions";
+import { useState } from "react";
+import { Button } from "./ui/button";
+import { Textarea } from "./ui/textarea";
 export default function EditBio({ userBaseInfo, userId }: any) {
-  const [open, setIsOpen] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(0);
   async function handleSubmit(e: any) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -82,54 +76,63 @@ export default function EditBio({ userBaseInfo, userId }: any) {
       userId,
     };
     await addBio(bioData);
+    setShowForm(false);
   }
+
   return (
     <>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 w-[300px]  sm:w-[500px] px-5">
         {showForm ? null : (
           <p className={`text-center`}>
             {userBaseInfo && userBaseInfo.length > 0 ? userBaseInfo[0].bio : ""}
           </p>
         )}
-
-        <form
-          onSubmit={handleSubmit}
-          className={`${
-            showForm ? "block" : "hidden"
-          } max-w-[300px] sm:w-[500px] text-center`}
-        >
-          <Textarea
-            className={`resize-none w-full`}
-            defaultValue={
-              userBaseInfo && userBaseInfo.length > 0 && userBaseInfo[0].bio
-            }
-            name="bio"
-          />
-          <div className={`flex items-center gap-2 ms-auto w-fit mt-3`}>
-            <Button
-              type="button"
+        {userBaseInfo[0].clerkUserId === userId && (
+          <>
+            <form
+              onSubmit={handleSubmit}
+              className={`${showForm ? "block" : "hidden"} text-center`}
+            >
+              <Textarea
+                onChange={(e) => {
+                  const x = e.target.value.length;
+                  setValue(x);
+                }}
+                className={`resize-none w-full`}
+                defaultValue={
+                  userBaseInfo && userBaseInfo.length > 0 && userBaseInfo[0].bio
+                }
+                name="bio"
+              />
+              <div className={`flex items-center gap-2 ms-auto w-fit mt-3`}>
+                <Button
+                  type="button"
+                  onClick={() => {
+                    setShowForm((prev) => !prev);
+                  }}
+                  variant={"secondary"}
+                >
+                  Cancel
+                </Button>
+                <Button disabled={value > 100 ? true : false} type="submit">
+                  Save
+                </Button>
+              </div>
+            </form>
+            <span
               onClick={() => {
                 setShowForm((prev) => !prev);
               }}
-              variant={"secondary"}
+              className={`${
+                showForm ? "hidden" : "inline-block"
+              }  bg-primary px-4 cursor-pointer self-center py-2 rounded-md text-primary-foreground text-sm hover:bg-primary/95 inline-block`}
             >
-              Cancel
-            </Button>
-            <Button type="submit">Save</Button>
-          </div>
-        </form>
-        <span
-          onClick={() => {
-            setShowForm((prev) => !prev);
-          }}
-          className={`${
-            showForm ? "hidden" : "inline-block"
-          }  bg-primary px-4 cursor-pointer self-center py-2 rounded-md text-primary-foreground text-sm hover:bg-primary/95 inline-block`}
-        >
-          {userBaseInfo && userBaseInfo.length > 0 && userBaseInfo[0].bio
-            ? "Edit Bio"
-            : "Add Bio"}
-        </span>
+              {userBaseInfo && userBaseInfo.length > 0 && userBaseInfo[0].bio
+                ? "Edit Bio"
+                : "Add Bio"}
+            </span>
+          </>
+        )}
       </div>
     </>
   );

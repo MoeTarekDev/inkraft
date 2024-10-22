@@ -1,12 +1,8 @@
 import CaptionCard from "@/components/CaptionCard";
 import WhoToFollow from "@/components/WhoToFollow";
 import { Post } from "@/lib/types";
-import {
-  getFollowedUsers,
-  getFollowedUsersPostsAndReposts,
-  getUser,
-} from "@/lib/users";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { getFollowedUsers, getFollowedUsersPostsAndReposts } from "@/lib/users";
+import { currentUser } from "@clerk/nextjs/server";
 
 export default async function Home() {
   const info: any = await currentUser();

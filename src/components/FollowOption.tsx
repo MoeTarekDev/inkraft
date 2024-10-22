@@ -16,7 +16,7 @@ export default function FollowOption({
       (user: any) => user.followedId === followedId
     );
     setIsUserFollowed(x);
-  }, [loggedInUserFollowedUsers]);
+  }, [loggedInUserFollowedUsers, followedId]);
   return (
     <>
       {isUserFollowed.length > 0 ? (

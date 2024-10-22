@@ -28,7 +28,7 @@ export default function FindLogic({
         user.userName.toLowerCase().includes(query.toLowerCase())
       );
     });
-  }, [query]);
+  }, [query, users]);
 
   return (
     <Dialog

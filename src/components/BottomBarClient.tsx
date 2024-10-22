@@ -1,6 +1,6 @@
 "use client";
 import { useUser } from "@clerk/nextjs";
-import { Bell, Bookmark, House, User } from "lucide-react";
+import { Bookmark, House, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -28,17 +28,6 @@ export default function BottomBarClient({ children }: any) {
     };
   }, [handleScroll]);
   const navLinks = [
-    {
-      linkName: "Notifications",
-      linkRef: "/notifications",
-      linkIcon: (
-        <Bell
-          className={`lg:w-5 lg:h-5 w-6 h-6 ${
-            pathName === "/notifications" ? "fill-primary" : ""
-          }`}
-        />
-      ),
-    },
     // {
     //   linkIcon: <Mail className="lg:w-5 lg:h-5 w-6 h-6" />,
     //   linkName: "Messages",

@@ -111,3 +111,31 @@ interface FullPostInfo {
 export interface PostResponse {
   data: FullPostInfo;
 }
+///
+export interface NotificationUserInfo {
+  id: string;
+  firstName: string;
+  lastName: string;
+  userName: string;
+  imageUrl: string;
+  followers?: number;
+  following?: number;
+  clerkUserId: string;
+}
+
+export interface NotificationPostInfo {
+  id: string;
+  caption?: string;
+  image?: string | null;
+  created_at: string;
+  users: NotificationUserInfo; // Post publisher's info
+}
+
+export interface Notification {
+  id: string;
+  read: boolean;
+  created_at: string;
+  type: "vote" | "comment" | "follow"; // Enum for notification type
+  users: NotificationUserInfo; // Receiver of the notification (logged-in user)
+  posts?: NotificationPostInfo; // Include only for 'vote' or 'comment'
+}
