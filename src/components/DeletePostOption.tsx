@@ -1,3 +1,4 @@
+"use client";
 import { useToast } from "@/hooks/use-toast";
 import { deletePost } from "@/lib/actions";
 import { Trash2 } from "lucide-react";

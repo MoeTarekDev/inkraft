@@ -2,7 +2,7 @@ import BottomBarClient from "./BottomBarClient";
 import Find from "./Find";
 import NotificationLinkAndCount from "./NotificationLinkAndCount";
 
-export default async function BottomBar({
+export default async function BottomBarContainer({
   unreadNotificationsCount,
 }: {
   unreadNotificationsCount: number;
