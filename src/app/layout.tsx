@@ -76,9 +76,9 @@ export default async function RootLayout({
                   userImage={info?.imageUrl}
                   unreadNotificationsCount={unreadNotificationsCount}
                 />
-                {/* <BottomBar
+                <BottomBar
                   unreadNotificationsCount={unreadNotificationsCount}
-                /> */}
+                />
               </SignedIn>
               <main className="flex w-full min-h-screen bg-background">
                 <div className="container mx-auto flex justify-center items-center  mb-[56px]  sm:mb-0">
