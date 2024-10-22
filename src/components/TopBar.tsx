@@ -67,11 +67,11 @@ export default function TopBar({
       />
       <h1 className="bg-primary text-center rounded-md w-10 h-10 lg:ms-1 hover:bg-primary/90 ">
         <Link
-          className="text-primary-foreground w-full inline-block p-2 font-bold"
+          className="text-primary-foreground text-center w-full inline-block p-2 font-bold"
           href="/"
         >
           ik
-          <span className=" ms-[2px] inline-block w-2 h-2 bg-primary rounded-full"></span>
+          <span className=" ms-[2px] inline-block w-1 h-1 bg-primary-foreground rounded-full"></span>
         </Link>
       </h1>
       <ThemeChanger />

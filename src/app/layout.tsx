@@ -1,5 +1,4 @@
 import { ourFileRouter } from "@/app/api/uploadthing/core";
-import BottomBar from "@/components/bottomBar";
 import ProgressProvider from "@/components/ProgressBarProvider";
 import Sidebar from "@/components/Sidebar";
 import TopBar from "@/components/TopBar";
@@ -18,6 +17,7 @@ import { ThemeProvider } from "next-themes";
 import localFont from "next/font/local";
 import { extractRouterConfig } from "uploadthing/server";
 import "./globals.css";
+import BottomBar from "@/components/bottomBar";
 const brockMann = localFont({
   src: "../fonts/brockmann-medium-webfont.woff2",
   display: "swap",
