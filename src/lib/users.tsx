@@ -452,7 +452,13 @@ export async function getFullPostData(postId: string | null, Id: string) {
         lastName,
         userName,
         imageUrl,
-        clerkUserId
+        clerkUserId,
+        followers!followers_followedId_fkey (
+        id
+      ),
+      following:followers!followers_followerId_fkey (
+        id
+      )
       )
     `
     )

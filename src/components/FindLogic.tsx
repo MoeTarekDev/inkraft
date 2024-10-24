@@ -39,7 +39,7 @@ export default function FindLogic({
       }}
     >
       <DialogTrigger className="sm:w-full flex justify-center">
-        <li
+        <span
           title="Find"
           className="p-2 lg:p-3 w-fit hover:bg-accent text-accent-foreground rounded-full lg:w-full lg:rounded-md text-lg lg:text-sm cursor-pointer"
         >
@@ -47,8 +47,9 @@ export default function FindLogic({
             <Search className="lg:w-5 lg:h-5 w-6 h-6" />
             <span className="hidden lg:inline-block">Find</span>
           </div>
-        </li>
+        </span>
       </DialogTrigger>
+
       <DialogContent className="sm:max-w-[425px] h-[90%] md:h-[382px] overflow-y-auto overflow-x-visible p-1 z-[99999] ">
         <DialogHeader className="hidden">
           <DialogTitle className="hidden">Find people</DialogTitle>
