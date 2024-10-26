@@ -1,13 +1,24 @@
+import FollowersPageInfiniteLoading from "@/components/FollowersPageInfiniteLoading";
 import FollowUser from "@/components/FollowUser";
 import { getFollowedUsers, getUserFollowersInfo } from "@/lib/users";
 import { currentUser } from "@clerk/nextjs/server";
+import { Suspense } from "react";
 
 export default async function page({ params }: any) {
-  const info = await currentUser();
-
   const { userId } = params;
-  const followers: any = await getUserFollowersInfo(userId);
-  const loggedInUserFollowedUsers = await getFollowedUsers(userId);
+
+  return (
+    <Suspense fallback={<div className="loader self-center mx-auto"></div>}>
+      <UserFollowers userId={userId} />
+    </Suspense>
+  );
+}
+
+async function UserFollowers({ userId }: { userId: string }) {
+  const info = await currentUser();
+  const followers: any = await getUserFollowersInfo(userId, 0, 10);
+  const loggedInUserFollowedUsers = await getFollowedUsers(info?.id);
+
   return (
     <>
       {followers.map((user: any) => (
@@ -20,6 +31,11 @@ export default async function page({ params }: any) {
           loggedInUserFollowedUsers={loggedInUserFollowedUsers}
         />
       ))}
+      <FollowersPageInfiniteLoading
+        userId={userId}
+        loggedInUserId={info?.id}
+        loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+      />
     </>
   );
 }

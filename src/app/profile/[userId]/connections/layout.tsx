@@ -1,6 +1,8 @@
 import FollowersAndFollowingNavbar from "@/components/FollowersAndFollowingNavbar";
-import WhoToFollow from "@/components/WhoToFollow";
+import ShowWhoToFollowLayout from "@/components/ShowWhoToFollowLayout";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getUser } from "@/lib/users";
+import { Suspense } from "react";
 
 export default async function Layout({
   children,
@@ -10,30 +12,49 @@ export default async function Layout({
   params: any;
 }>) {
   const { userId } = params;
-  const info = await getUser(userId);
 
   return (
     <>
-      <section className="grid grid-cols-12 w-full sm:pr-5 space-x-4 h-full ">
-        <div className="col-span-full lg:col-span-8 flex flex-col items-center relative border-r ">
-          <div className=" border-b w-full sticky p-2 left-0 right-0 top-0 backdrop-blur-md bg-card/3 z-[999]">
-            <div className="flex flex-col p-2 sm:p-2 sm:pb-4 ">
-              <h3 className="font-bold text-xl">
-                {info && info.length && info[0].firstName}{" "}
-                {info && info.length && info[0].lastName}
-              </h3>
-              <span className="text-muted-foreground text-sm">
-                @{info && info[0] && info[0].userName}
-              </span>
-            </div>
+      <ShowWhoToFollowLayout
+        className={"h-full sm:pr-5"}
+        showWhoToFollow={true}
+      >
+        <div className="col-span-full lg:col-span-8 flex flex-col items-center relative border-r h-full">
+          <div className=" border-b w-full sticky p-2 left-0 right-0 top-0 backdrop-blur-md bg-card/3 z-[10]">
+            <Suspense fallback={<UserInfoSkeleton />}>
+              <UserInfo userId={userId} />
+            </Suspense>
             <FollowersAndFollowingNavbar />
           </div>
-          <div className="self-stretch">{children}</div>
+          <div className="self-stretch flex flex-col items-stretch">
+            {children}
+          </div>
         </div>
-        <aside className="col-span-4 hidden lg:block pt-5">
-          <WhoToFollow />
-        </aside>
-      </section>
+      </ShowWhoToFollowLayout>
     </>
+  );
+}
+
+async function UserInfo({ userId }: { userId: string }) {
+  const info = await getUser(userId);
+
+  return (
+    <div className="flex flex-col p-2 sm:p-2 sm:pb-4 ">
+      <h3 className="font-bold text-xl">
+        {info && info.length && info[0].firstName}{" "}
+        {info && info.length && info[0].lastName}
+      </h3>
+      <span className="text-muted-foreground text-sm">
+        @{info && info[0] && info[0].userName}
+      </span>
+    </div>
+  );
+}
+async function UserInfoSkeleton() {
+  return (
+    <div className="flex flex-col p-2 sm:p-2 sm:pb-4 gap-1">
+      <Skeleton className="w-[200px] h-4" />
+      <Skeleton className="w-[150px] h-4" />
+    </div>
   );
 }

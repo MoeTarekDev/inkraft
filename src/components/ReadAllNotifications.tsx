@@ -9,13 +9,13 @@ export default function ReadAllNotifications({
   userId: string | undefined;
 }) {
   return (
-    <div className="flex items-center justify-between pb-5 border-b">
+    <div className="flex items-center justify-between pb-5 border-b w-full border-r">
       <h3 className="font-bold text-xl p-5">Notifications</h3>
       <div
         onClick={async () => {
           await readAllNotifications(userId);
         }}
-        className="flex items-center gap-1 hover:text-primary text-sm text-muted-foreground cursor-pointer pr-2 sm:pr-5 press-effect"
+        className="flex items-center gap-1 hover:text-primary text-sm text-muted-foreground cursor-pointer pr-3 sm:pr-5 press-effect"
       >
         <CircleCheckBig className="w-4 h-4" />
         <span>Mark all as read</span>

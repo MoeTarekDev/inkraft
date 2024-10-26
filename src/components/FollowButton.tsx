@@ -21,7 +21,7 @@ export default function FollowButton({
   }, [loggedInUserFollowedUsers, followedId]);
 
   return (
-    <div className={`pe-3 z-20 relative`}>
+    <div className={`z-20 relative`}>
       {userIsFollowed.length > 0 ? (
         <Button
           variant={"destructive"}

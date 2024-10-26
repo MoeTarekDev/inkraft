@@ -6,7 +6,7 @@ import FollowUser from "./FollowUser";
 
 export default async function WhoToFollow({ loggedInUserFollowedUsers }: any) {
   const { userId }: any = auth();
-  const users = await whoToFollow(userId);
+  const users = await whoToFollow(userId, 0, 4);
   // console.log(users);
 
   return (
@@ -27,7 +27,7 @@ export default async function WhoToFollow({ loggedInUserFollowedUsers }: any) {
                 />
               ))}
           </div>
-          {users && users.length > 2 ? (
+          {users && users.length > 3 ? (
             <Link
               className="p-3 block text-sm hover:bg-accent"
               href="/suggested"

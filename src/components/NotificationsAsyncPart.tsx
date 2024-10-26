@@ -2,9 +2,10 @@ import { fetchNotificationsForUser, getFollowedUsers } from "@/lib/users";
 import NotificationCmmented from "./NotificationCmmented";
 import NotificationFollow from "./NotificationFollow";
 import NotificationVoted from "./NotificationVoted";
+import NotificationsPageInfiniteLoading from "./NotificationsPageInfiniteLoading";
 
 export default async function NotificationsAsyncPart({ info }: { info: any }) {
-  const notifications = await fetchNotificationsForUser(info?.id);
+  const notifications = await fetchNotificationsForUser(info?.id, 0, 10);
   const loggedInUserFollowedUsers: any = await getFollowedUsers(info?.id);
   const notificationsType = {
     follow: NotificationFollow,
@@ -15,7 +16,7 @@ export default async function NotificationsAsyncPart({ info }: { info: any }) {
   return (
     <>
       {notifications && notifications.length && notifications?.length > 0 ? (
-        <div className="pt-0">
+        <div className="pt-0 flex flex-col w-full border-r h-full">
           {notifications?.map((notification: any) => {
             const Component = notificationsType[notification.type];
             return Component ? (
@@ -27,9 +28,13 @@ export default async function NotificationsAsyncPart({ info }: { info: any }) {
               />
             ) : null;
           })}
+          <NotificationsPageInfiniteLoading
+            loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+            notificationsType={notificationsType}
+          />
         </div>
       ) : (
-        <div className="max-w-[400px] mt-11 flex items-center justify-center self-center px-5">
+        <div className="max-w-[400px] mt-11 flex items-center justify-center self-center px-5 w-full">
           <p className="text-3xl">No notifications here — yet ...</p>
         </div>
       )}

@@ -21,8 +21,6 @@ export default function CaptionCardMini({
   loggedInUserFollowedUsers: any;
   notification: Notification | null;
 }) {
-  console.log(comment);
-
   if (singlePostMode)
     return (
       <article className="bg-card w-full flex gap-3 h-fit pt-5">

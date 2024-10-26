@@ -17,7 +17,7 @@ export default function ProfileCard({
   followersCount: number;
 }) {
   return (
-    <div className="flex flex-col gap-2 relative z-50">
+    <div className="flex flex-col gap-2 relative z-[999999]">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1">
           <Link href={`/profile/${user?.clerkUserId}`}>

@@ -36,7 +36,7 @@ export default async function RootLayout({
   const info: any = await currentUser();
   const followedUsers: any = await getFollowedUsers(info?.id);
   const myFollowers: any = await getUserFollowers(info?.id);
-  const notifications = await fetchNotificationsForUser(info?.id);
+  const notifications = await fetchNotificationsForUser(info?.id, 0, 10);
 
   const unreadNotificationsCount =
     notifications?.filter((notification) => {

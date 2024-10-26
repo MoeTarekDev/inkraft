@@ -193,8 +193,21 @@ export default function CreatePost({
                   </div>
                   <Textarea
                     onChange={(e) => {
-                      if (e.target.value.length > 0) {
+                      const characterCount = e.target.value.length as number;
+                      const progressValue = (
+                        (characterCount / 280) *
+                        100
+                      ).toFixed(1);
+
+                      setProgress(Number(progressValue));
+
+                      if (
+                        e.target.value.length > 0 &&
+                        e.target.value.length < 281
+                      ) {
                         setThereIsACaption(true);
+                      } else if (e.target.value.length > 281) {
+                        setThereIsACaption(false);
                       } else {
                         setThereIsACaption(false);
                       }
@@ -205,6 +218,14 @@ export default function CreatePost({
                   />
                 </div>
                 <ImageUploader imageUrl={imageUrl} setImageUrl={setImageUrl} />
+                <div
+                  className={`${
+                    progress > 100 ? "flex" : "hidden"
+                  } bg-muted w-fit p-3 rounded-lg text-xs`}
+                >
+                  Maximum characters count is{"  "}
+                  <span className="underline ms-1 cursor-default">280</span>.
+                </div>
                 <div className="self-end flex items-center gap-2">
                   <HoverCard>
                     <HoverCardTrigger asChild>
@@ -216,6 +237,7 @@ export default function CreatePost({
                       <span>Coming soon </span>
                     </HoverCardContent>
                   </HoverCard>
+                  <Progress max={200} value={progress} className="w-[40px]" />
                   <DialogClose disabled={!thereIsACaption}>
                     <Button disabled={!thereIsACaption}>Post</Button>
                   </DialogClose>

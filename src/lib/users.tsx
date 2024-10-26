@@ -25,7 +25,11 @@ export async function getUser(Id: string | null) {
   return users;
 }
 
-export async function getUserFullPostData(Id: string | null) {
+export async function getUserFullPostData(
+  Id: string | null | undefined,
+  offset: number,
+  limit: number
+) {
   const { data, error } = await supabase
     .from("posts")
     .select(
@@ -92,7 +96,9 @@ export async function getUserFullPostData(Id: string | null) {
     `
     )
     .eq("userId", Id)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .range(offset, offset + limit - 1);
+
   if (error) console.log(error);
   const { data: bookmarksData, error: bookmarksError } = await supabase
     .from("bookmarks")
@@ -130,7 +136,11 @@ export async function getFollowedUsers(Id: string | null | undefined) {
 
   return data;
 }
-export async function getFollowedUsersInfo(Id: string | null) {
+export async function getFollowedUsersInfo(
+  Id: string | null,
+  offset: number,
+  limit: number
+) {
   const { data: followings, error } = await supabase
     .from("followers")
     .select(
@@ -150,7 +160,8 @@ export async function getFollowedUsersInfo(Id: string | null) {
     )
     `
     )
-    .eq("followerId", Id); // Fetch users the logged-in user follows
+    .eq("followerId", Id) // Fetch users the logged-in user follows
+    .range(offset, offset + limit - 1);
 
   if (error) {
     console.error("Error fetching followings:", error);
@@ -171,7 +182,11 @@ export async function getUserFollowers(Id: string | null | undefined) {
 
   return data;
 }
-export async function getUserFollowersInfo(Id: string | null) {
+export async function getUserFollowersInfo(
+  Id: string | null,
+  offset: number,
+  limit: number
+) {
   const { data: followers, error } = await supabase
     .from("followers")
     .select(
@@ -192,7 +207,8 @@ export async function getUserFollowersInfo(Id: string | null) {
     )
     `
     )
-    .eq("followedId", Id); // Fetch users who follow the logged-in user
+    .eq("followedId", Id) // Fetch users who follow the logged-in user
+    .range(offset, offset + limit - 1);
 
   if (error) {
     console.error("Error fetching followers:", error);
@@ -201,7 +217,11 @@ export async function getUserFollowersInfo(Id: string | null) {
 
   return followers;
 }
-export async function whoToFollow(Id: string | null) {
+export async function whoToFollow(
+  Id: string | null,
+  offset: number,
+  limit: number
+) {
   const followedUsers = await getFollowedUsers(Id);
   const followedUserIds = followedUsers?.map((follow) => follow.followedId);
 
@@ -225,7 +245,8 @@ export async function whoToFollow(Id: string | null) {
         )
     `
     )
-    .not("clerkUserId", "eq", Id); // Exclude the logged-in user
+    .not("clerkUserId", "eq", Id) // Exclude the logged-in user
+    .range(offset, offset + limit - 1);
 
   // Add the "not in" clause only if the user is following anyone
   if (followedUserIds && followedUserIds.length > 0) {
@@ -291,7 +312,11 @@ export async function unFollowUser(followerId: string, followedId: string) {
   revalidatePath("/");
 }
 
-export async function getFollowedUsersPostsAndReposts(loggedInUserId: string) {
+export async function getFollowedUsersPostsAndReposts(
+  loggedInUserId: string,
+  offset: number,
+  limit: number
+) {
   const followedUsers = await getFollowedUsers(loggedInUserId);
   const followedUserIds = followedUsers?.map((follow) => follow.followedId);
 
@@ -352,7 +377,8 @@ export async function getFollowedUsersPostsAndReposts(loggedInUserId: string) {
     )
     //@ts-expect-error nvm
     .in("userId", followedUserIds)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .range(offset, offset + limit - 1);
 
   if (postsError) {
     console.error("Error fetching followed users' posts:", postsError);
@@ -630,7 +656,11 @@ export async function getUserRepostedPosts() {
   if (error) console.log(error);
   return data;
 }
-export async function getUserBookmarkedPosts(loggedInUserId: string | null) {
+export async function getUserBookmarkedPosts(
+  loggedInUserId: string | null,
+  offset: number,
+  limit: number
+) {
   // Fetch bookmarked posts
   const { data: bookmarkedPosts, error: bookmarkedError } = await supabase
     .from("bookmarks")
@@ -665,7 +695,8 @@ export async function getUserBookmarkedPosts(loggedInUserId: string | null) {
     `
     )
     .eq("userId", loggedInUserId) // Make sure to filter by logged-in user
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .range(offset, offset + limit - 1);
 
   if (bookmarkedError) {
     console.error("Error fetching bookmarked posts:", bookmarkedError);
@@ -720,7 +751,11 @@ export async function deleteAllBookmarks(userId: string) {
   revalidatePath("/bookmarks");
   revalidatePath("/profile/[userId]", "page");
 }
-export async function fetchNotificationsForUser(userId: string | undefined) {
+export async function fetchNotificationsForUser(
+  userId: string | undefined,
+  offset: number,
+  limit: number
+) {
   const { data, error } = await supabase
     .from("notifications")
     .select(
@@ -756,7 +791,8 @@ export async function fetchNotificationsForUser(userId: string | undefined) {
   `
     )
     .eq("userId", userId)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .range(offset, offset + limit - 1);
 
   if (error) {
     console.error("Error fetching notifications:", error);

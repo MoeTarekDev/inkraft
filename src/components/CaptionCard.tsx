@@ -31,7 +31,7 @@ export default function CaptionCard({
   loggedInUserFollowedUsers: any;
   bigPost: any;
   personalInfo: any;
-  userImage: string | null;
+  userImage: string | null | undefined;
 }) {
   let upVoteCountForNormalMode = [];
   let downVoteCountForNormalMode = [];
