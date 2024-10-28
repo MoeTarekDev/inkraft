@@ -3,6 +3,7 @@ import { followUser, unFollowUser } from "@/lib/users";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { sendNotification } from "@/lib/actions";
+import { useToast } from "@/hooks/use-toast";
 
 export default function FollowButton({
   followerId,
@@ -10,6 +11,7 @@ export default function FollowButton({
   loggedInUserFollowedUsers,
 }: any) {
   const [userIsFollowed, setUserIsFollowed] = useState<any>([]);
+  const { toast } = useToast();
   useEffect(() => {
     if (loggedInUserFollowedUsers) {
       setUserIsFollowed(() => {
@@ -26,8 +28,15 @@ export default function FollowButton({
         <Button
           variant={"destructive"}
           onClick={async (e) => {
-            e.stopPropagation();
-            await unFollowUser(followerId, followedId);
+            try {
+              e.stopPropagation();
+              await unFollowUser(followerId, followedId);
+            } catch (error: any) {
+              toast({
+                variant: "destructive",
+                description: error.message,
+              });
+            }
           }}
           className={
             "inline-block press-effect text-xs cursor-pointer py-1 px-4"
@@ -38,10 +47,17 @@ export default function FollowButton({
       ) : (
         <Button
           onClick={async (e) => {
-            e.stopPropagation();
-            await followUser(followerId, followedId);
-            if (followedId !== followerId) {
-              await sendNotification(followedId, followerId, "follow", null);
+            try {
+              e.stopPropagation();
+              await followUser(followerId, followedId);
+              if (followedId !== followerId) {
+                await sendNotification(followedId, followerId, "follow", null);
+              }
+            } catch (error: any) {
+              toast({
+                variant: "destructive",
+                description: error.message,
+              });
             }
           }}
           className={

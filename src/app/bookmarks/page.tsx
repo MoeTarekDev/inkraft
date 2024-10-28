@@ -5,13 +5,19 @@ import ShowWhoToFollowLayout from "@/components/ShowWhoToFollowLayout";
 import { Post } from "@/lib/types";
 import { getFollowedUsers, getUserBookmarkedPosts } from "@/lib/users";
 import { currentUser } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Bookmarks",
+};
+
 export default async function page() {
   const info: any = await currentUser();
 
   return (
     <ShowWhoToFollowLayout className={"mt-0 sm:pr-5"} showWhoToFollow={true}>
-      <div className="col-span-full lg:col-span-8 flex flex-col border-r relative">
+      <div className="col-span-full lg:col-span-8 flex flex-col border-r relative h-full">
         <div className=" flex items-center justify-between p-5 pb-5 border-b sticky top-0 z-40 bg-card/30 backdrop-blur-md">
           <div className="flex flex-col">
             <h3 className="font-bold text-xl">Bookmarks</h3>

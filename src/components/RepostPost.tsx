@@ -35,8 +35,11 @@ export default function RepostPost({
           </Link>
         ),
       });
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        description: error.message,
+      });
     }
   }
   async function handleUndoSubmit() {
@@ -45,8 +48,11 @@ export default function RepostPost({
       toast({
         description: "Post has been UnReposted.",
       });
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        description: error.message,
+      });
     }
   }
 

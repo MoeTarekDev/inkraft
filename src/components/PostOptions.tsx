@@ -1,5 +1,5 @@
 "use client";
-import { CircleEllipsis, Twitter } from "lucide-react";
+import { CircleEllipsis } from "lucide-react";
 import { useEffect, useState } from "react";
 import BookmarkOption from "./BookmarkOption";
 import CopyOption from "./CopyOption";
@@ -50,10 +50,7 @@ export default function PostOptions({
             />
           )}
           <CopyOption postLink={postLink} setIsOpen={setIsOpen} />
-          <li className="p-4 flex items-center gap-2 hover:bg-accent cursor-pointer">
-            <Twitter />
-            <span>Share post to Twitter</span>
-          </li>
+          {/* <SharePostOption postContent={post?.caption} postLink={postLink} /> */}
           <BookmarkOption
             userId={userId}
             postId={postId}

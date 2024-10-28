@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/collapsible";
 import { useState } from "react";
 import { addComment, sendNotification } from "@/lib/actions";
+import { useToast } from "@/hooks/use-toast";
 export default function ReplyToPost({
   singlePostMode,
   userId,
@@ -17,6 +18,7 @@ export default function ReplyToPost({
   userImage,
   bigPost,
   receiverId,
+  setIsDialogOpen,
 }: {
   singlePostMode: boolean;
   explicitPostId: string | null;
@@ -24,11 +26,14 @@ export default function ReplyToPost({
   userImage: string;
   bigPost: any;
   receiverId: any;
+  setIsDialogOpen: any;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState("");
-
+  const [isPending, setIsPending] = useState(false);
+  const { toast } = useToast();
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    setIsPending(true);
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const content = formData.get("content") as string;
@@ -38,20 +43,33 @@ export default function ReplyToPost({
       userId,
       postId,
     };
-
-    await addComment(commentData);
-    if (userId !== receiverId) {
-      await sendNotification(
-        receiverId,
-        userId,
-        "comment",
-        bigPost?.post?.id ?? explicitPostId
-      );
+    try {
+      await addComment(commentData);
+      if (userId !== receiverId) {
+        await sendNotification(
+          receiverId,
+          userId,
+          "comment",
+          bigPost?.post?.id ?? explicitPostId
+        );
+      }
+      toast({
+        description: "Comment has been added.",
+      });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        description: error.message,
+      });
+    } finally {
+      (e.target as HTMLFormElement).reset();
+      setValue("");
+      setIsPending(false);
+      if (setIsDialogOpen) {
+        setIsDialogOpen(false);
+      }
     }
-    (e.target as HTMLFormElement).reset();
-    setValue("");
   }
-  // console.log(userId, receiverId, explicitPostId);
 
   if (singlePostMode) {
     return (
@@ -101,7 +119,12 @@ export default function ReplyToPost({
               </div>
             </CollapsibleTrigger>
             <CollapsibleContent className="self-end CollapsibleContent">
-              <Button disabled={value.length > 0 ? false : true}>Reply</Button>
+              <Button
+                className="press-effect"
+                disabled={isPending || value.length === 0}
+              >
+                {isPending ? "Replying" : "Reply"}
+              </Button>
             </CollapsibleContent>
           </form>
         </Collapsible>
@@ -133,8 +156,13 @@ export default function ReplyToPost({
             className="ring-0 focus-visible:ring-0 border-0 text-base"
           />
         </div>
-        <div className="self-end press-effect">
-          <Button disabled={value.length > 0 ? false : true}>Reply</Button>
+        <div className="self-end">
+          <Button
+            className="press-effect"
+            disabled={isPending || value.length === 0}
+          >
+            {isPending ? "Replying" : "Reply"}
+          </Button>
         </div>
       </form>
     </>

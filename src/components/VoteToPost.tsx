@@ -1,4 +1,5 @@
 "use client";
+import { useToast } from "@/hooks/use-toast";
 import { sendNotification } from "@/lib/actions";
 import { addVote, deleteVote, updateVote } from "@/lib/users";
 import { ChevronDown, ChevronUp } from "lucide-react";
@@ -20,15 +21,23 @@ export default function VoteToPost({
   postVotes: any;
   receiverId: any;
 }) {
+  const { toast } = useToast();
   async function handleUpVote() {
     const voteData = {
       postId,
       userId,
       voteType: "upvote",
     };
-    await addVote(voteData);
-    if (userId !== receiverId) {
-      await sendNotification(receiverId, userId, "vote", postId);
+    try {
+      await addVote(voteData);
+      if (userId !== receiverId) {
+        await sendNotification(receiverId, userId, "vote", postId);
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        description: error.message,
+      });
     }
   }
   async function handleDownVote() {
@@ -37,9 +46,16 @@ export default function VoteToPost({
       userId,
       voteType: "downvote",
     };
-    await addVote(voteData);
-    if (userId !== receiverId) {
-      await sendNotification(receiverId, userId, "vote", postId);
+    try {
+      await addVote(voteData);
+      if (userId !== receiverId) {
+        await sendNotification(receiverId, userId, "vote", postId);
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        description: error.message,
+      });
     }
   }
   const didIUpVote = postVotes.filter(
@@ -112,11 +128,9 @@ export default function VoteToPost({
           }}
           className={` ${
             didIUpVote.length ? "bg-primary text-primary-foreground" : ""
-          } hover:bg-primary press-effect hover:text-primary-foreground rounded-full cursor-pointer`}
+          } hover:bg-primary press-effect hover:text-primary-foreground rounded-full cursor-pointer w-5 h-5`}
         />
-        <span className="cursor-default hidden sm:inline-block">
-          {voteCountForNormalMode}
-        </span>
+        <span className="cursor-default ">{voteCountForNormalMode}</span>
         <ChevronDown
           onClick={() => {
             if (didIDownVote.length) {
@@ -129,7 +143,7 @@ export default function VoteToPost({
           }}
           className={`${
             didIDownVote.length ? "bg-primary text-primary-foreground" : ""
-          } hover:bg-primary press-effect hover:text-primary-foreground rounded-full cursor-pointer`}
+          } hover:bg-primary press-effect hover:text-primary-foreground rounded-full cursor-pointer w-5 h-5`}
         />
       </div>
     </>

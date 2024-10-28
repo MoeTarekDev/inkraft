@@ -13,10 +13,19 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import { deleteAllBookmarks } from "@/lib/users";
+import { useToast } from "@/hooks/use-toast";
 
 export default function DeleteAllBookmarks({ userId }: { userId: string }) {
+  const { toast } = useToast();
   async function handleDelete() {
-    deleteAllBookmarks(userId);
+    try {
+      await deleteAllBookmarks(userId);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        description: error.message,
+      });
+    }
   }
   return (
     <Popover>

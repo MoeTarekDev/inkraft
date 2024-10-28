@@ -11,7 +11,7 @@ import defaultCover from "../../public/default-cover.webp";
 export default function ProfilePageCoverImage({}) {
   return (
     <Dialog>
-      <DialogContent className="w-full max-w-full max-h-[50%] sm:max-h-[80%] h-[80%] p-0 bg-transparent border-0">
+      <DialogContent className="w-full fixed max-w-full max-h-[50%] sm:max-h-[80%] h-[80%] p-0 bg-transparent border-0">
         <DialogHeader className="hidden">
           <DialogTitle>Cover image Dialog</DialogTitle>
           <DialogDescription>

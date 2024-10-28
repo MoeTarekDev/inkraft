@@ -12,7 +12,7 @@ export default function ShowWhoToFollowLayout({
   return (
     <>
       <section
-        className={`grid grid-cols-12 w-full space-x-4 sm:mt-0 self-start ${className}`}
+        className={`grid grid-cols-12 w-full h-full space-x-4 sm:mt-0 self-start ${className}`}
       >
         {children}
 

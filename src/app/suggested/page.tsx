@@ -3,8 +3,12 @@ import SuggestedPageInfiniteLoading from "@/components/SuggestedPageInfiniteLoad
 import { User } from "@/lib/types";
 import { getFollowedUsers, whoToFollow } from "@/lib/users";
 import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 import { Suspense } from "react";
 
+export const metadata: Metadata = {
+  title: "Suggested",
+};
 export default async function page() {
   return (
     <>

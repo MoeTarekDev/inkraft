@@ -21,8 +21,11 @@ export default function BookmarkOption({
       toast({
         description: "Post added to Bookmarks.",
       });
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        description: error.message,
+      });
     }
   }
   async function handleRemoveBookmark() {
@@ -32,8 +35,11 @@ export default function BookmarkOption({
       toast({
         description: "Post removed from Bookmarks.",
       });
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        description: error.message,
+      });
     }
   }
 

@@ -2,7 +2,6 @@
 
 import { revalidatePath } from "next/cache";
 import { supabase } from "./supabase";
-
 export async function createUser(user: any) {
   const { data, error } = await supabase.from("users").insert([user]);
   if (error) {
@@ -13,6 +12,15 @@ export async function createUser(user: any) {
   return data;
 }
 
+export async function updateUser(user: any) {
+  const { clerkUserId, ...updatedFields } = user;
+  const { error } = await supabase
+    .from("users")
+    .update(updatedFields)
+    .eq("clerkUserId", clerkUserId);
+  if (error) throw new Error("Error while updating profile");
+  revalidatePath("/");
+}
 export async function getUser(Id: string | null) {
   "use client";
   const { data: users, error } = await supabase
@@ -99,15 +107,15 @@ export async function getUserFullPostData(
     .order("created_at", { ascending: false })
     .range(offset, offset + limit - 1);
 
-  if (error) console.log(error);
+  if (error)
+    throw new Error("There was an error when fetching user's posts data");
   const { data: bookmarksData, error: bookmarksError } = await supabase
     .from("bookmarks")
     .select("postId")
     .eq("userId", Id);
 
   if (bookmarksError) {
-    console.log(bookmarksError);
-    throw new Error("Unable to fetch user's bookmarks at home page");
+    throw new Error("Unable to fetch user's bookmarks data");
   }
   const bookmarksIds: any = new Set(bookmarksData?.map((post) => post.postId));
 
@@ -121,7 +129,6 @@ export async function getUserFullPostData(
       isBookmarkedByUser,
     };
   });
-  //@ts-expect-error nvm
   return [...newData];
 }
 export async function getFollowedUsers(Id: string | null | undefined) {
@@ -130,9 +137,7 @@ export async function getFollowedUsers(Id: string | null | undefined) {
     .select("followedId")
     .eq("followerId", Id);
 
-  if (error) {
-    console.error("Error fetching followed users:", error);
-  }
+  if (error) throw new Error("Unable to fetch user's following list");
 
   return data;
 }
@@ -163,10 +168,7 @@ export async function getFollowedUsersInfo(
     .eq("followerId", Id) // Fetch users the logged-in user follows
     .range(offset, offset + limit - 1);
 
-  if (error) {
-    console.error("Error fetching followings:", error);
-    return { error };
-  }
+  if (error) throw new Error("Unable to fetch user's following list's data");
 
   return [...followings];
 }
@@ -176,9 +178,7 @@ export async function getUserFollowers(Id: string | null | undefined) {
     .select("followerId")
     .eq("followedId", Id);
 
-  if (error) {
-    console.error("Error fetching followed users:", error);
-  }
+  if (error) throw new Error("Unable to fetch user's followers list");
 
   return data;
 }
@@ -210,10 +210,7 @@ export async function getUserFollowersInfo(
     .eq("followedId", Id) // Fetch users who follow the logged-in user
     .range(offset, offset + limit - 1);
 
-  if (error) {
-    console.error("Error fetching followers:", error);
-    return { error };
-  }
+  if (error) throw new Error("Unable to fetch user's followers list's data");
 
   return followers;
 }
@@ -245,20 +242,17 @@ export async function whoToFollow(
         )
     `
     )
-    .not("clerkUserId", "eq", Id) // Exclude the logged-in user
+    .not("clerkUserId", "eq", Id)
     .range(offset, offset + limit - 1);
 
-  // Add the "not in" clause only if the user is following anyone
   if (followedUserIds && followedUserIds.length > 0) {
-    query = query.not("clerkUserId", "in", `(${followedUserIds.join(",")})`); // Exclude followed users
+    query = query.not("clerkUserId", "in", `(${followedUserIds.join(",")})`);
   }
 
   const { data: users, error } = await query;
 
-  if (error) {
-    console.error("Error fetching users:", error);
-  }
-  // console.log(users);
+  if (error) throw new Error("Unable to fetch who to follow user's data");
+
   return users;
 }
 export async function allUsersExceptMe(Id: string | null) {
@@ -283,7 +277,7 @@ export async function allUsersExceptMe(Id: string | null) {
   `
     )
     .not("clerkUserId", "eq", Id);
-  if (error) console.log(error);
+  if (error) throw new Error("Unable to fetch all app user's Except you");
   return data;
 }
 
@@ -291,7 +285,7 @@ export async function followUser(followerId: string, followedId: string) {
   const { error } = await supabase
     .from("followers")
     .insert([{ followerId: followerId, followedId: followedId }]);
-  if (error) console.log(error);
+  if (error) throw new Error("Unable to follow this user.");
 
   revalidatePath("/profile/[userId]", "page");
   revalidatePath("/");
@@ -304,9 +298,7 @@ export async function unFollowUser(followerId: string, followedId: string) {
     .eq("followerId", followerId)
     .eq("followedId", followedId);
 
-  if (error) {
-    console.error("Error unfollowing user:", error);
-  }
+  if (error) throw new Error("Unable to unFollow this user.");
 
   revalidatePath("/profile/[userId]", "page");
   revalidatePath("/");
@@ -375,15 +367,11 @@ export async function getFollowedUsersPostsAndReposts(
     )
   `
     )
-    //@ts-expect-error nvm
     .in("userId", followedUserIds)
     .order("created_at", { ascending: false })
     .range(offset, offset + limit - 1);
 
-  if (postsError) {
-    console.error("Error fetching followed users' posts:", postsError);
-    return { error: postsError };
-  }
+  if (postsError) throw new Error("Unable to fetch your feed data.");
 
   // Fetch reposted posts and bookmarks as before
   const { data: repostedPosts, error: repostsError } = await supabase
@@ -392,10 +380,7 @@ export async function getFollowedUsersPostsAndReposts(
     .eq("userId", loggedInUserId)
     .eq("isRepost", true);
 
-  if (repostsError) {
-    console.error("Error fetching user's reposts:", repostsError);
-    return { error: repostsError };
-  }
+  if (repostsError) throw new Error("Unable to fetch reposted posts.");
 
   const repostedPostIds = new Set(
     repostedPosts?.map((post) => post.originalPostId)
@@ -406,10 +391,8 @@ export async function getFollowedUsersPostsAndReposts(
     .select("postId")
     .eq("userId", loggedInUserId);
 
-  if (bookmarksError) {
-    console.error("Error fetching user's bookmarks:", bookmarksError);
-    throw new Error("Unable to fetch user's bookmarks at home page");
-  }
+  if (bookmarksError)
+    throw new Error("Unable to fetch bookmarks data for your feed.");
 
   const bookmarksIds = new Set(bookmarksData?.map((post) => post.postId));
 
@@ -431,13 +414,9 @@ export async function getFollowedUsersPostsAndReposts(
 
 export async function getFullPostData(postId: string | null, Id: string) {
   if (!postId) {
-    console.error("Error: postId is undefined or null");
     return { error: "Invalid postId" };
   }
 
-  console.log("Fetching post with postId:", postId);
-
-  // Step 1: Fetch the post's full info and publisher info
   const { data: postData, error: postError } = await supabase
     .from("posts")
     .select(
@@ -462,12 +441,8 @@ export async function getFullPostData(postId: string | null, Id: string) {
     .eq("id", postId)
     .single();
 
-  if (postError) {
-    console.error("Error fetching post info:", postError);
-    return { error: postError };
-  }
+  if (postError) throw new Error("Unable to fetch this post's data.");
 
-  // Step 2: Fetch all comments for the post
   const { data: commentsData, error: commentsError } = await supabase
     .from("comments")
     .select(
@@ -491,10 +466,8 @@ export async function getFullPostData(postId: string | null, Id: string) {
     .eq("postId", postId)
     .order("created_at", { ascending: true });
 
-  if (commentsError) {
-    console.error("Error fetching comments:", commentsError);
-    return { error: commentsError };
-  }
+  if (commentsError)
+    throw new Error("Unable to fetch this post's comment's data.");
 
   const { data: postVotes, error } = await supabase
     .from("postVotes")
@@ -505,22 +478,16 @@ export async function getFullPostData(postId: string | null, Id: string) {
     )
     .eq("postId", postId);
 
-  if (error) {
-    console.error("Error fetching votes:", error);
-    return error;
-  }
+  if (error) throw new Error("Unable to fetch post's votes");
+
   const { data: repostedPosts, error: repostsError } = await supabase
     .from("posts")
     .select("originalPostId")
     .eq("userId", Id)
     .eq("isRepost", true);
 
-  if (repostsError) {
-    console.error("Error fetching user's reposts:", repostsError);
-    return { error: repostsError };
-  }
+  if (repostsError) throw new Error("Unable to fetch user's reposted posts");
 
-  // Step 4: Create a set of reposted post IDs for quick lookup
   const repostedPostIds = new Set(
     repostedPosts?.map((post) => post.originalPostId)
   );
@@ -531,10 +498,8 @@ export async function getFullPostData(postId: string | null, Id: string) {
     .select("postId")
     .eq("userId", Id);
 
-  if (bookmarksError) {
-    console.log(bookmarksError);
-    throw new Error("Unable to fetch user's bookmarks at home page");
-  }
+  if (bookmarksError) throw new Error("Unable to fetch user's bookmarks data.");
+
   const bookmarksIds: any = new Set(bookmarksData?.map((post) => post.postId));
   const isBookmarkedByUser = bookmarksIds.has(postData.id);
   const fullPostInfo = {
@@ -553,9 +518,8 @@ export async function addVote(voteData: {
   voteType: string;
 }) {
   const { data, error } = await supabase.from("postVotes").insert([voteData]);
-  if (error) {
-    console.log(error);
-  }
+  if (error) throw new Error("Unable to vote to this post.");
+
   revalidatePath("/profile/[userId]", "page");
   revalidatePath("/[username]/status/[postId]", "page");
   revalidatePath("/");
@@ -568,9 +532,7 @@ export async function deleteVote(userId: string, postId: number) {
     .delete()
     .eq("userId", userId)
     .eq("postId", postId);
-  if (error) {
-    console.log(error);
-  }
+  if (error) throw new Error("Unable to vote to this post.");
   revalidatePath("/profile/[userId]", "page");
   revalidatePath("/");
   return data;
@@ -585,9 +547,8 @@ export async function updateVote(
     .update({ voteType: voteType })
     .eq("userId", userId)
     .eq("postId", postId);
-  if (error) {
-    console.log(error);
-  }
+  if (error) throw new Error("Unable to vote to this post.");
+
   revalidatePath("/profile/[userId]", "page");
   revalidatePath("/");
   return data;
@@ -604,10 +565,8 @@ export async function repostPost(
     },
   ]);
 
-  if (error) {
-    console.error("Error reposting:", error);
-    return null;
-  }
+  if (error) throw new Error("Unable to repost this post.");
+
   revalidatePath("/profile/[userId]", "page");
   revalidatePath("/");
   return data;
@@ -619,10 +578,8 @@ export async function undoRepostPost(userId: string, originalPostId: number) {
     isRepost: true,
   });
 
-  if (error) {
-    console.error("Error undoing repost:", error);
-    return null;
-  }
+  if (error) throw new Error("Unable to undo repost this post.");
+
   revalidatePath("/profile/[userId]", "page");
   revalidatePath("/");
   return data;
@@ -653,7 +610,7 @@ export async function getUserRepostedPosts() {
   `
     )
     .eq("isRepost", true);
-  if (error) console.log(error);
+  if (error) throw new Error("Unable to fetch user's reposts.");
   return data;
 }
 export async function getUserBookmarkedPosts(
@@ -698,10 +655,8 @@ export async function getUserBookmarkedPosts(
     .order("created_at", { ascending: false })
     .range(offset, offset + limit - 1);
 
-  if (bookmarkedError) {
-    console.error("Error fetching bookmarked posts:", bookmarkedError);
-    return { error: bookmarkedError };
-  }
+  if (bookmarkedError)
+    throw new Error("Unable to fetch user's bookmarked posts.");
 
   // Fetch user's reposts to check if the logged-in user has reposted any of these posts
   const { data: repostedPosts, error: repostsError } = await supabase
@@ -710,10 +665,7 @@ export async function getUserBookmarkedPosts(
     .eq("userId", loggedInUserId)
     .eq("isRepost", true);
 
-  if (repostsError) {
-    console.error("Error fetching user's reposts:", repostsError);
-    return { error: repostsError };
-  }
+  if (repostsError) throw new Error("Unable to fetch user's reposts.");
 
   // Create a set of reposted post IDs for quick lookup
   const repostedPostIds = new Set(
@@ -743,10 +695,7 @@ export async function deleteAllBookmarks(userId: string) {
     .from("bookmarks")
     .delete()
     .eq("userId", userId);
-  if (error) {
-    console.log(error);
-    throw new Error("Unable to add post to bookmarks!");
-  }
+  if (error) throw new Error("Unable to delete all bookmarks!");
 
   revalidatePath("/bookmarks");
   revalidatePath("/profile/[userId]", "page");
@@ -794,10 +743,7 @@ export async function fetchNotificationsForUser(
     .order("created_at", { ascending: false })
     .range(offset, offset + limit - 1);
 
-  if (error) {
-    console.error("Error fetching notifications:", error);
-    return null;
-  }
+  if (error) throw new Error("Unable to fetch user's notifications.");
 
   return data;
 }

@@ -2,7 +2,12 @@ import NotificationsAsyncPart from "@/components/NotificationsAsyncPart";
 import ReadAllNotifications from "@/components/ReadAllNotifications";
 import ShowWhoToFollowLayout from "@/components/ShowWhoToFollowLayout";
 import { currentUser } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Notifications",
+};
 
 export default async function page() {
   const info = await currentUser();

@@ -1,3 +1,4 @@
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -10,6 +11,7 @@ import { MessageCircleMore } from "lucide-react";
 import ReplyToPost from "./ReplyToPost";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { getRelativeTime } from "@/lib/features";
+import { useState } from "react";
 export default function ReplyToPostDialog({
   bigPost,
   post,
@@ -19,10 +21,11 @@ export default function ReplyToPostDialog({
   explicitPostId,
   receiverId,
 }: any) {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   if (singlePostMode) {
     return (
       <>
-        <Dialog>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger className="block w-1/3 z-20 h-[42px] ">
             <div
               title="Comment"
@@ -78,6 +81,7 @@ export default function ReplyToPostDialog({
                 </div>
               </div>
               <ReplyToPost
+                setIsDialogOpen={setIsDialogOpen}
                 explicitPostId={null}
                 singlePostMode={false}
                 userId={userId}
@@ -93,7 +97,7 @@ export default function ReplyToPostDialog({
   }
   return (
     <>
-      <Dialog>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger className="block w-1/3 z-20  h-[42px]">
           <div
             title="Comment"
@@ -147,6 +151,7 @@ export default function ReplyToPostDialog({
               </div>
             </div>
             <ReplyToPost
+              setIsDialogOpen={setIsDialogOpen}
               singlePostMode={false}
               explicitPostId={explicitPostId}
               userId={userId}

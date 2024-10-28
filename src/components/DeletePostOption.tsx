@@ -19,9 +19,13 @@ export default function DeletePostOption({
       toast({
         description: "Your post has been deleted.",
       });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        description: error.message,
+      });
+    } finally {
       setIsOpen(false);
-    } catch (error) {
-      console.log(error);
     }
   }
   return (

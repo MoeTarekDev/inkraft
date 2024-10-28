@@ -44,7 +44,6 @@ export default function CreatePost({
     const image = imageUrl;
     const isRepost = false;
 
-    // Pass caption and imageUrl to the createPost action
     const postData = {
       caption,
       image,
@@ -53,8 +52,7 @@ export default function CreatePost({
 
     try {
       await createPost(postData);
-      // Clear form after successful post creation
-      setImageUrl(""); // Clear uploaded image
+      setImageUrl("");
       (e.target as HTMLFormElement).reset();
       toast({
         description: "Your post has been created.",
@@ -67,8 +65,11 @@ export default function CreatePost({
           </Link>
         ),
       });
-    } catch (error) {
-      console.error("Error creating post:", error);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        description: error.message,
+      });
     }
   };
 
@@ -82,7 +83,7 @@ export default function CreatePost({
                 title="Post"
                 className="w-fit press-effect p-2 lg:w-full flex items-center justify-center rounded-full lg:rounded-md "
               >
-                <span className="hidden lg:inline-block ">Post</span>
+                <span className="hidden lg:inline-block">Post</span>
                 <Pencil className="w-5 h-5 lg:hidden" />
               </Button>
             </DialogTrigger>

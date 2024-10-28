@@ -167,6 +167,7 @@ export default function CaptionCard({
             />
           </div>
           <ReplyToPost
+            setIsDialogOpen={null}
             explicitPostId={null}
             singlePostMode={true}
             userId={userId}

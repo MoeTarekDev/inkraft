@@ -10,21 +10,34 @@ import {
   getUserFullPostData,
 } from "@/lib/users";
 
+import BookmarksPageInfiniteLoading from "@/components/BookmarksPageInfiniteLoading";
 import EditBio from "@/components/EditBio";
 import ProfilePageAvatarImage from "@/components/ProfilePageAvatarImage";
+import ProfilePageCoverImage from "@/components/ProfilePageCoverImage";
+import ProfilePagePostsInfiniteLoading from "@/components/ProfilePagePostsInfiniteLoading";
+import { Skeleton } from "@/components/ui/skeleton";
 import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
-import ProfilePageCoverImage from "@/components/ProfilePageCoverImage";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import ProfilePagePostsInfiniteLoading from "@/components/ProfilePagePostsInfiniteLoading";
-import BookmarksPageInfiniteLoading from "@/components/BookmarksPageInfiniteLoading";
-import { Skeleton } from "@/components/ui/skeleton";
+export async function generateMetadata({ params }: any) {
+  try {
+    const user = await getUser(params.userId);
+    const name = `${user[0].firstName} ${user[0].lastName}`;
+    const userName = `${user[0].userName}`;
+    return { title: `${name} (${userName})`, default: "profile" };
+  } catch (error) {
+    console.log(error);
 
+    notFound();
+  }
+}
 export default async function page({ params }: any) {
   const info: any = await currentUser();
   const { userId } = params;
   const userBaseInfo = await getUser(userId);
 
+  if (!userBaseInfo || userBaseInfo.length === 0) notFound();
   return (
     <section className="w-full flex flex-col mt-[81px] sm:mt-0 items-center gap-10">
       <div className="self-stretch">
@@ -81,8 +94,7 @@ async function UserPersonalInfo({ userId }: { userId: string }) {
   const followedUsers: any = await getFollowedUsers(userId);
   const myFollowers: any = await getUserFollowers(userId);
   const loggedInUserFollowedUsers: any = await getFollowedUsers(info.id);
-  const user = userBaseInfo?.[0];
-  if (!user) return null;
+  if (!userBaseInfo || userBaseInfo.length === 0) notFound();
   return (
     <>
       <div className="mt-20 flex flex-col gap-2 items-center">
@@ -163,7 +175,7 @@ async function GetPosts({ userId }: any) {
 
   return (
     <>
-      <div className="w-full col-span-full px-5">
+      <div className="w-full col-span-full px-5 mb-3">
         {userPosts && userPosts.length < 1 ? (
           userId === info?.id ? (
             <p className="text-center">
@@ -225,7 +237,7 @@ async function GetBookmarks({ userId }: any) {
           />
         </>
       ) : (
-        <div className="mt-8">
+        <div className="mb-3">
           <h2 className="text-center">Save posts for later</h2>
           <p className="text-center text-muted-foreground">
             Bookmark posts to easily find them again in the future

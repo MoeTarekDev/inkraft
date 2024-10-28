@@ -22,7 +22,7 @@ export default function NotificationLinkAndCount({
           <div className="relative">
             <Bell className="lg:w-5 lg:h-5 w-6 h-6" />
             {unreadNotificationsCount !== 0 && (
-              <span className="absolute top-0 right-0 translate-x-1 -translate-y-1 p-1 w-4 h-4 rounded-full bg-primary text-primary-foreground text-sm  flex items-center justify-center">
+              <span className="absolute top-0 right-0 translate-x-1 -translate-y-1 p-1 w-4 h-4 rounded-full bg-primary text-primary-foreground text-xs  flex items-center justify-center">
                 {unreadNotificationsCount}
               </span>
             )}

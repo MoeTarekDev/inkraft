@@ -13,18 +13,16 @@ export async function createPost(postData) {
     .from("posts")
     .insert(postInfo)
     .select();
-  console.log(data);
-  if (error) console.log(error);
+  if (error) throw new Error("There is an error while creating the post.");
+  revalidatePath("/profile/[userId]", "page");
   return data;
 }
 
 export async function addComment(commentData) {
   const { data, error } = await supabase.from("comments").insert([commentData]);
 
-  if (error) {
-    console.error("Error adding comment:", error);
-    return null;
-  }
+  if (error) throw new Error("there was an error while adding the comment.");
+
   revalidatePath("/profile/[userId]", "page");
   revalidatePath("/[username]/status/[postId]", "page");
   revalidatePath("/");
@@ -37,10 +35,8 @@ export async function deletePost(userId, postId) {
     .delete()
     .eq("userId", userId)
     .eq("id", postId);
-  if (error) {
-    console.log(error);
-    throw new Error("Failed to delete post");
-  }
+  if (error) throw new Error("there was an error while deleting your post.");
+
   revalidatePath("/profile/[userId]", "page");
   revalidatePath("/");
 }
@@ -50,10 +46,8 @@ export async function addToBookmarks(userId, postId) {
     .from("bookmarks")
     .insert([{ userId: userId, postId: postId }])
     .select();
-  if (error) {
-    console.log(error);
-    throw new Error("Unable to add post to bookmarks!");
-  }
+  if (error) throw new Error("Unable to add post to bookmarks!");
+
   revalidatePath("/", "page");
 }
 export async function removeFromBookmarks(userId, postId) {
@@ -62,17 +56,14 @@ export async function removeFromBookmarks(userId, postId) {
     .delete()
     .eq("userId", userId)
     .eq("postId", postId);
-  if (error) {
-    console.log(error);
-    throw new Error("Unable to delete post from bookmarks!");
-  }
+  if (error) throw new Error("Unable to remove post from bookmarks!");
+
   revalidatePath("/", "page");
 }
 export async function addBio(bioData) {
   const { bio, userId } = bioData;
   if (bio === null || bio.trim() === "") {
-    console.log("Bio cannot be empty");
-    return;
+    throw new Error("Bio can not be empty.");
   }
 
   const { data, error } = await supabase
@@ -80,10 +71,7 @@ export async function addBio(bioData) {
     .update({ bio })
     .eq("clerkUserId", userId);
 
-  if (error) {
-    console.error("Error updating bio:", error);
-    return;
-  }
+  if (error) throw new Error("there was and error while adding bio.");
 
   console.log("Bio updated:", data);
   revalidatePath(`/profile/${userId}`);
@@ -121,8 +109,8 @@ export async function readAllNotifications(userId) {
     .update({ read: true })
     .eq("userId", userId);
 
-  if (error) {
-    console.log(error);
-  }
+  if (error)
+    throw new Error("there was and error while reading notifications.");
+
   revalidatePath("/", "page");
 }

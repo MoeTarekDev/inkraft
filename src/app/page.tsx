@@ -4,8 +4,12 @@ import ShowWhoToFollowLayout from "@/components/ShowWhoToFollowLayout";
 import { Post } from "@/lib/types";
 import { getFollowedUsers, getFollowedUsersPostsAndReposts } from "@/lib/users";
 import { currentUser } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 import { Suspense } from "react";
 
+export const metadata: Metadata = {
+  title: "Home / inkraft",
+};
 export default async function Home() {
   return (
     <>
