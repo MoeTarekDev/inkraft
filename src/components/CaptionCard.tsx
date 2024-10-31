@@ -1,9 +1,11 @@
 import { getRelativeTime } from "@/lib/features";
-import { CommentBigPost, Post } from "@/lib/types";
+import { Post } from "@/lib/types";
 import { RefreshCcw } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import CaptionCardMini from "./CaptionCardMini";
+import { Suspense } from "react";
+import CaptionCardImage from "./CaptionCardImage";
+import PostComments from "./PostComments";
 import PostOptions from "./PostOptions";
 import ReplyToPost from "./ReplyToPost";
 import ReplyToPostDialog from "./ReplyToPostDialog";
@@ -12,7 +14,6 @@ import UserAvatarWithHover from "./UserAvatarWithHover";
 import UserNameWithHover from "./UserNameWithHover";
 import UserUserNameWithHover from "./UserUserNameWithHover";
 import VoteToPost from "./VoteToPost";
-import CaptionCardImage from "./CaptionCardImage";
 
 export default function CaptionCard({
   rounded,
@@ -179,18 +180,15 @@ export default function CaptionCard({
                 : post?.users.clerkUserId
             }
           />
-          <div className="flex flex-col gap-7 divide-y">
-            {bigPost?.comments.map((comment: CommentBigPost) => (
-              <CaptionCardMini
-                key={comment?.id}
-                singlePostMode={true}
-                comment={comment}
-                userId={userId}
-                loggedInUserFollowedUsers={loggedInUserFollowedUsers}
-                notification={null}
-              />
-            ))}
-          </div>
+          <Suspense
+            fallback={<div className="loader mx-auto self-center"></div>}
+          >
+            <PostComments
+              userId={userId}
+              postId={bigPost?.post?.id}
+              loggedInUserFollowedUsers={loggedInUserFollowedUsers}
+            />
+          </Suspense>
         </div>
       </article>
     );

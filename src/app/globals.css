@@ -397,3 +397,9 @@ main .container:has(.test-no-margin) {
     height: 0;
   }
 }
+.cl-signUp-start {
+  padding: 0px !important;
+}
+.cl-signIn-start {
+  padding: 0px !important;
+}

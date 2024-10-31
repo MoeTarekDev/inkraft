@@ -58,8 +58,6 @@ export default function NotificationCmmented({
           </div>
 
           <CaptionCardMini
-            singlePostMode={false}
-            comment={null}
             userId={userId}
             loggedInUserFollowedUsers={loggedInUserFollowedUsers}
             notification={notification}
@@ -100,8 +98,6 @@ export default function NotificationCmmented({
           </div>
 
           <CaptionCardMini
-            singlePostMode={false}
-            comment={null}
             userId={userId}
             loggedInUserFollowedUsers={loggedInUserFollowedUsers}
             notification={notification}

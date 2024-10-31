@@ -15,10 +15,7 @@ export default async function Layout({
 
   return (
     <>
-      <ShowWhoToFollowLayout
-        className={"h-full sm:pr-5"}
-        showWhoToFollow={true}
-      >
+      <ShowWhoToFollowLayout className={"h-full"} showWhoToFollow={true}>
         <div className="col-span-full lg:col-span-8 flex flex-col items-center relative border-r h-full">
           <div className=" border-b w-full sticky p-2 left-0 right-0 top-0 backdrop-blur-md bg-card/3 z-[50]">
             <Suspense fallback={<UserInfoSkeleton />}>

@@ -443,32 +443,6 @@ export async function getFullPostData(postId: string | null, Id: string) {
 
   if (postError) throw new Error("Unable to fetch this post's data.");
 
-  const { data: commentsData, error: commentsError } = await supabase
-    .from("comments")
-    .select(
-      `
-      *,
-      users (
-        firstName,
-        lastName,
-        userName,
-        imageUrl,
-        clerkUserId,
-        followers!followers_followedId_fkey (
-        id
-      ),
-      following:followers!followers_followerId_fkey (
-        id
-      )
-      )
-    `
-    )
-    .eq("postId", postId)
-    .order("created_at", { ascending: true });
-
-  if (commentsError)
-    throw new Error("Unable to fetch this post's comment's data.");
-
   const { data: postVotes, error } = await supabase
     .from("postVotes")
     .select(
@@ -504,13 +478,41 @@ export async function getFullPostData(postId: string | null, Id: string) {
   const isBookmarkedByUser = bookmarksIds.has(postData.id);
   const fullPostInfo = {
     post: postData,
-    comments: commentsData,
     postVotes,
     isRepostedByUser,
     isBookmarkedByUser,
   };
 
   return { data: fullPostInfo };
+}
+export async function getPostComments(postId: string | null) {
+  const { data: commentsData, error: commentsError } = await supabase
+    .from("comments")
+    .select(
+      `
+    *,
+    users (
+      firstName,
+      lastName,
+      userName,
+      imageUrl,
+      clerkUserId,
+      followers!followers_followedId_fkey (
+      id
+    ),
+    following:followers!followers_followerId_fkey (
+      id
+    )
+    )
+  `
+    )
+    .eq("postId", postId)
+    .order("created_at", { ascending: true });
+
+  if (commentsError)
+    throw new Error("Unable to fetch this post's comment's data.");
+
+  return commentsData;
 }
 export async function addVote(voteData: {
   userId: string;
@@ -746,4 +748,30 @@ export async function fetchNotificationsForUser(
   if (error) throw new Error("Unable to fetch user's notifications.");
 
   return data;
+}
+export async function postMetaData(postId: string | null) {
+  if (!postId) {
+    return { error: "Invalid postId" };
+  }
+
+  const { data: postData, error: postError } = await supabase
+    .from("posts")
+    .select(
+      `
+      caption,
+      users (
+        firstName,
+        lastName
+      )
+    `
+    )
+    .eq("id", postId)
+    .single();
+
+  if (postError) {
+    console.log(postError);
+
+    throw new Error("Unable to fetch this post's data.");
+  }
+  return postData;
 }

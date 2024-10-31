@@ -39,7 +39,7 @@ export default async function page({ params }: any) {
 
   if (!userBaseInfo || userBaseInfo.length === 0) notFound();
   return (
-    <section className="w-full flex flex-col mt-[81px] sm:mt-0 items-center gap-10">
+    <section className="w-full flex flex-col mt-[81px] sm:mt-0 items-center gap-10 sm:border-r h-full">
       <div className="self-stretch">
         <div className="h-[300px] w-full relative">
           <ProfilePageCoverImage />

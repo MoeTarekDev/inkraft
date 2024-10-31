@@ -1,59 +1,22 @@
 "use client";
+import { readNotification } from "@/lib/actions";
+import { getRelativeTime } from "@/lib/features";
+import { Notification } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
-import { CommentBigPost, Notification } from "@/lib/types";
-import { getRelativeTime } from "@/lib/features";
 import UserAvatarWithHover from "./UserAvatarWithHover";
 import UserNameWithHover from "./UserNameWithHover";
 import UserUserNameWithHover from "./UserUserNameWithHover";
-import { readNotification } from "@/lib/actions";
 
 export default function CaptionCardMini({
-  singlePostMode,
-  comment,
   userId,
   loggedInUserFollowedUsers,
   notification,
 }: {
-  singlePostMode: boolean;
-  comment: CommentBigPost | null;
   userId: string;
   loggedInUserFollowedUsers: any;
   notification: Notification | null;
 }) {
-  if (singlePostMode)
-    return (
-      <article className="bg-card w-full flex gap-3 h-fit pt-5">
-        <div className="w-full flex flex-col flex-wrap">
-          <div className="flex items-center gap-3 ">
-            <UserAvatarWithHover
-              user={comment?.users}
-              userId={userId}
-              loggedInUserFollowedUsers={loggedInUserFollowedUsers}
-            />
-            <div className="flex items-center text-sm lg:flex gap-1 sm:gap-2">
-              <UserNameWithHover
-                user={comment?.users}
-                userId={userId}
-                loggedInUserFollowedUsers={loggedInUserFollowedUsers}
-              />
-              <UserUserNameWithHover
-                user={comment?.users}
-                userId={userId}
-                loggedInUserFollowedUsers={loggedInUserFollowedUsers}
-              />
-              <div className=" flex items-center gap-1 line-clamp-1">
-                <span className="dot"></span>
-                <span className="text-muted-foreground text-xs">
-                  {getRelativeTime(comment?.created_at)}
-                </span>
-              </div>
-            </div>
-          </div>
-          <p className="ms-[47px]">{comment?.content}</p>
-        </div>
-      </article>
-    );
   return (
     <>
       {!notification?.read ? (

@@ -56,8 +56,6 @@ export default function NotificationVoted({
           </div>
 
           <CaptionCardMini
-            singlePostMode={false}
-            comment={null}
             userId={userId}
             loggedInUserFollowedUsers={loggedInUserFollowedUsers}
             notification={notification}
@@ -96,8 +94,6 @@ export default function NotificationVoted({
           </div>
 
           <CaptionCardMini
-            singlePostMode={false}
-            comment={null}
             userId={userId}
             loggedInUserFollowedUsers={loggedInUserFollowedUsers}
             notification={notification}

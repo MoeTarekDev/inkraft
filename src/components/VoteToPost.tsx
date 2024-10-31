@@ -86,9 +86,9 @@ export default function VoteToPost({
             }}
             className={` ${
               didIUpVote.length ? "bg-primary text-primary-foreground" : ""
-            } hover:bg-primary press-effect hover:text-primary-foreground rounded-full cursor-pointer`}
+            } hover:bg-primary press-effect hover:text-primary-foreground rounded-full cursor-pointer w-5 h-5`}
           />
-          <span className="cursor-default hidden sm:inline-block">
+          <span className="cursor-default inline-block">
             {voteCountForSinglePostMode}
           </span>
           <ChevronDown
@@ -103,7 +103,7 @@ export default function VoteToPost({
             }}
             className={`${
               didIDownVote.length ? "bg-primary text-primary-foreground" : ""
-            } hover:bg-primary press-effect hover:text-primary-foreground rounded-full cursor-pointer`}
+            } hover:bg-primary press-effect hover:text-primary-foreground rounded-full cursor-pointer w-5 h-5`}
           />
         </div>
       </>

@@ -1,23 +1,19 @@
 import CaptionCard from "@/components/CaptionCard";
-import WhoToFollow from "@/components/WhoToFollow";
-import { getFollowedUsers, getFullPostData } from "@/lib/users";
+import ShowWhoToFollowLayout from "@/components/ShowWhoToFollowLayout";
+import { getFollowedUsers, getFullPostData, postMetaData } from "@/lib/users";
 import { currentUser } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 export async function generateMetadata({ params }: any) {
-  const personalInfo: any = await currentUser();
-
-  let bigPost: any;
+  let data: any;
   try {
-    bigPost = await getFullPostData(params.postId, personalInfo.id);
+    data = await postMetaData(params.postId);
   } catch (error) {
     console.log(error);
-
     notFound();
   }
-
-  const name = `${bigPost.data.post.users.firstName} ${bigPost.data.post.users.lastName}`;
+  const name = `${data.users.firstName} ${data.users.lastName}`;
   return {
-    title: `${name} on inkraft: "${bigPost.data.post.caption}"`,
+    title: `${name} on inkraft: "${data.caption}"`,
     default: "profile",
   };
 }
@@ -32,13 +28,11 @@ export default async function page({ params }: any) {
     bigPost = await getFullPostData(postId, personalInfo.id);
   } catch (error) {
     console.log(error);
-
     notFound();
   }
-  // if (!bigPost || bigPost.length === 0) notFound();
 
   return (
-    <section className="grid grid-cols-12 w-full self-start h-full sm:pe-5 space-x-4 mt-[81px] sm:mt-0 ">
+    <ShowWhoToFollowLayout showWhoToFollow={true} className={"mt-[81px]"}>
       <div className="col-span-full lg:col-span-8 flex flex-col sm:gap-2 items-center border-r">
         <CaptionCard
           userImage={null}
@@ -51,9 +45,6 @@ export default async function page({ params }: any) {
           loggedInUserFollowedUsers={loggedInUserFollowedUsers}
         />
       </div>
-      <aside className="col-span-4 hidden lg:block p-5">
-        <WhoToFollow loggedInUserFollowedUsers={loggedInUserFollowedUsers} />
-      </aside>
-    </section>
+    </ShowWhoToFollowLayout>
   );
 }

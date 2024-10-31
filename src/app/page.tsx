@@ -13,10 +13,7 @@ export const metadata: Metadata = {
 export default async function Home() {
   return (
     <>
-      <ShowWhoToFollowLayout
-        showWhoToFollow={true}
-        className={"sm:p-5 mt-[81px]"}
-      >
+      <ShowWhoToFollowLayout showWhoToFollow={true} className={"mt-[81px]"}>
         <div className="col-span-full lg:col-span-8 flex flex-col sm:gap-2 items-center w-full pt-[0.5rem]">
           <Suspense fallback={<div className="loader"></div>}>
             <FollowedUsersPosts />

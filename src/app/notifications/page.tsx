@@ -14,10 +14,7 @@ export default async function page() {
 
   return (
     <>
-      <ShowWhoToFollowLayout
-        showWhoToFollow={true}
-        className={"sm:ps-0 sm:pt-0 sm:pe-5 p-0 mt-[81px]"}
-      >
+      <ShowWhoToFollowLayout showWhoToFollow={true} className={"mt-[81px]"}>
         <div className="col-span-full lg:col-span-8 flex flex-col items-center w-full">
           <ReadAllNotifications userId={info?.id} />
           <Suspense fallback={<div className="loader self-center"></div>}>
