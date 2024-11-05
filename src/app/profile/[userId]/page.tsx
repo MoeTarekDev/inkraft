@@ -172,6 +172,7 @@ async function GetPosts({ userId }: any) {
   const info: any = await currentUser();
   const userPosts: any = await getUserFullPostData(userId, 0, 10);
   const loggedInUserFollowedUsers: any = await getFollowedUsers(info.id);
+  // console.log(userPosts);
 
   return (
     <>
@@ -189,7 +190,7 @@ async function GetPosts({ userId }: any) {
             {userPosts?.map((post: Post) => (
               <CaptionCard
                 userImage={info.imageUrl}
-                personalInfo={null}
+                personalInfo={info}
                 bigPost={null}
                 userId={info.id}
                 post={post}

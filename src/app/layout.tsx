@@ -126,7 +126,7 @@ const brockMann = localFont({
 export const metadata: Metadata = {
   title: {
     template: "%s / inkraft",
-    default: "Explore / inkraft",
+    default: "inkraft",
   },
   description:
     "Discover trending posts, engage with the community, and explore fresh content tailored to your interests on the home page of Inkraft.",
@@ -150,6 +150,22 @@ export default async function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <link
+            rel="icon"
+            type="image/png"
+            href="/favicon-96x96.png"
+            sizes="96x96"
+          />
+          <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+          <link rel="shortcut icon" href="/favicon.ico" />
+          <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/apple-touch-icon.png"
+          />
+          <link rel="manifest" href="/site.webmanifest" />
+        </head>
         <body
           className={`${brockMann.className} antialiased bg-background min-h-[calc(100vh-56px)] sm:min-h-screen`}
         >
@@ -185,6 +201,7 @@ export default async function RootLayout({
                   />
                   <BottomBarContainer
                     unreadNotificationsCount={unreadNotificationsCount}
+                    userImage={info?.imageUrl}
                   />
                 </SignedIn>
                 <main className="bg-background w-full min-h-[calc(100vh-56px)] sm:min-h-screen">

@@ -53,8 +53,7 @@ export default function CaptionCard({
     //@ts-expect-error nvm
 
     voteCountForNormalMode =
-      upVoteCountForNormalMode.length - downVoteCountForNormalMode.length ||
-      null;
+      upVoteCountForNormalMode.length - downVoteCountForNormalMode.length;
   } else {
     //@ts-expect-error nvm
     upVoteCountForNormalMode = post?.postVotes?.filter(
@@ -66,8 +65,7 @@ export default function CaptionCard({
     );
     //@ts-expect-error nvm
     voteCountForNormalMode =
-      upVoteCountForNormalMode?.length - downVoteCountForNormalMode?.length ||
-      null;
+      upVoteCountForNormalMode?.length - downVoteCountForNormalMode?.length;
   }
 
   if (singlePostMode) {
@@ -80,7 +78,7 @@ export default function CaptionCard({
     //@ts-expect-error nvm
     voteCountForSinglePostMode =
       upVoteCountForSinglePostMode.length -
-        downVoteCountForSinglePostMode.length || null;
+      downVoteCountForSinglePostMode.length;
   }
 
   if (singlePostMode)
@@ -216,9 +214,11 @@ export default function CaptionCard({
             href={`/profile/${post.users.clerkUserId}`}
             className="flex gap-[3px] hover:underline cursor-pointer"
           >
-            {post.users.firstName} {""}
-            {post.users.lastName}
-            {""} reposted
+            {personalInfo?.firstName === post.users.firstName &&
+            personalInfo?.lastName === post.users.lastName
+              ? "You"
+              : `${post.users.firstName} ${post.users.lastName}`}{" "}
+            reposted
           </Link>
         </div>
       ) : null}

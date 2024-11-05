@@ -1,4 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Inkraft
+
+**Inkraft** is a social media web application that combines the best of **X** and **Reddit**. With a focus on user interaction, it enables users to share thoughts, engage with others, and explore a continuous feed of posts.
+
+## Features
+
+- **Home Feed**: Browse a feed filled with posts from people you follow.
+- **Search System**: Search for and discover new users easily.
+- **Notifications**: Stay up-to-date with notifications for new followers, comments, and reposts.
+- **Bookmarks**: Save your favorite posts to revisit later.
+- **Profile Page**: Customize your profile with personal information, and view your posts, followers, and followed users.
+- **Create Posts**: Share your thoughts with text captions and images.
+- **Repost**: Repost content from others to share with your followers.
+- **Follow & Engage**: Follow other users and leave comments on their posts.
+- **Infinite Scrolling**: Smooth, infinite scrolling for all pages.
+- **Post Pages**: Dedicated pages for each post, displaying all comments and interactions.
+- **Full Authentication**: Secure sign-in and sign-up, protecting user data and interactions.
+
+## Technologies Used
+
+- **Next.js**: For server-side rendering and optimized front-end performance.
+- **TypeScript**: Ensures type safety and reduces bugs.
+- **Clerk**: Handles authentication with ease and security.
+- **ShadCN**: A consistent, accessible UI component library.
+- **Uploadthing**: Manages image uploads efficiently.
+- **Next Themes**: Allows for customizable themes and dark mode.
+- **Tailwind CSS & tailwind-animate**: Enables rapid and responsive styling.
+- **Supabase**: A scalable backend database solution with real-time capabilities.
 
 ## Getting Started
 

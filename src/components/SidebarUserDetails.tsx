@@ -43,12 +43,14 @@ export default function SidebarUserDetails({
         <UserButton />
       </div>
 
-      <div className="hidden text-xs ms-[28px] text-center lg:flex items-center gap-2 absolute right-[15px] z-[-1]">
+      <div className="hidden text-xs ms-[28px] lg:flex items-center gap-2 left-[18px]  absolute z-[-1]">
         <div className="flex flex-col">
           <span className="line-clamp-1">
             {firstName} {lastName}
           </span>
-          <span className="text-muted-foreground">@{userName}</span>
+          <span className="text-muted-foreground line-clamp-1">
+            @{userName}
+          </span>
         </div>
         <div className="hidden lg:block">
           <Ellipsis />

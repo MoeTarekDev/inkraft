@@ -185,10 +185,7 @@ export default function CreatePost({
                 <div className="flex gap-3 border-b">
                   <div className="w-9 h-9 lg:w-10 lg:h-10">
                     <Avatar>
-                      <AvatarImage
-                        src="https://github.com/shadcn.png"
-                        alt="user image"
-                      />
+                      <AvatarImage src={userImage} alt="user image" />
                       <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                   </div>

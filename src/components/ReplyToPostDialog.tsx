@@ -32,9 +32,7 @@ export default function ReplyToPostDialog({
               className="border press-effect h-full flex items-center gap-1 p-2 flex-1 justify-center rounded-md hover:bg-accent cursor-pointer"
             >
               <MessageCircleMore className="w-5 h-5" />
-              <span className="hidden sm:inline-block">
-                {bigPost?.comments?.length}
-              </span>
+              <span className="inline-block">{bigPost?.comments?.length}</span>
             </div>
           </DialogTrigger>
           <DialogContent className="bg-card border-0">
@@ -56,7 +54,7 @@ export default function ReplyToPostDialog({
                   </Avatar>
                 </div>
                 <div className="other flex flex-col gap-1">
-                  <div className="flex items-center gap-2 text-sm">
+                  <div className="flex items-center gap-2 text-sm flex-wrap">
                     <div className="font-medium flex gap-1">
                       <span>{bigPost?.post?.users?.firstName}</span>
                       <span>{bigPost?.post?.users?.lastName}</span>
@@ -65,7 +63,7 @@ export default function ReplyToPostDialog({
                       @{bigPost?.post?.users?.userName}
                     </span>
                     <span className="dot"></span>
-                    <span className="text-muted-foreground">
+                    <span className="text-muted-foreground line-clamp-1">
                       {getRelativeTime(bigPost?.post?.created_at)}
                     </span>
                   </div>
@@ -104,9 +102,7 @@ export default function ReplyToPostDialog({
             className="border press-effect h-full flex items-center gap-1 p-2 flex-1 justify-center rounded-md hover:bg-accent cursor-pointer"
           >
             <MessageCircleMore className="w-5 h-5" />
-            <span className="hidden sm:inline-block">
-              {post?.comments?.length}
-            </span>
+            <span className="inline-block">{post?.comments?.length}</span>
           </div>
         </DialogTrigger>
         <DialogContent className="bg-card border-0">
@@ -128,7 +124,7 @@ export default function ReplyToPostDialog({
                 </Avatar>
               </div>
               <div className="other flex flex-col gap-1">
-                <div className="flex items-center gap-2 text-sm">
+                <div className="flex items-center gap-x-2 text-sm flex-wrap">
                   <div className="font-medium flex gap-1">
                     <span>{post?.users?.firstName}</span>
                     <span>{post?.users?.lastName}</span>

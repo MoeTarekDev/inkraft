@@ -39,7 +39,7 @@ async function PostComment({
             userId={userId}
             loggedInUserFollowedUsers={loggedInUserFollowedUsers}
           />
-          <div className="flex items-center text-sm lg:flex gap-1 sm:gap-2">
+          <div className="flex items-center text-sm lg:flex gap-1 sm:gap-2 self-start mt-1">
             <UserNameWithHover
               user={comment?.users}
               userId={userId}

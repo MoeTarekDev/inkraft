@@ -14,7 +14,7 @@ export default async function Home() {
   return (
     <>
       <ShowWhoToFollowLayout showWhoToFollow={true} className={"mt-[81px]"}>
-        <div className="col-span-full lg:col-span-8 flex flex-col sm:gap-2 items-center w-full pt-[0.5rem]">
+        <div className="col-span-full lg:col-span-8 flex flex-col sm:gap-2 items-center w-full sm:pt-[0.5rem] mb-3">
           <Suspense fallback={<div className="loader"></div>}>
             <FollowedUsersPosts />
           </Suspense>

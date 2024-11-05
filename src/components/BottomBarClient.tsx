@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import CreatePost from "./CreatePost";
-export default function BottomBarClient({ children }: any) {
+export default function BottomBarClient({ children, userImage }: any) {
   const user = useUser();
   const pathName = usePathname();
   const [isBlurred, setIsBlurred] = useState<boolean>(false);
@@ -96,7 +96,11 @@ export default function BottomBarClient({ children }: any) {
           ))}
         </ul>
       </nav>
-      <CreatePost isBlurred={isBlurred} showSmallModal={true} />
+      <CreatePost
+        isBlurred={isBlurred}
+        showSmallModal={true}
+        userImage={userImage}
+      />
     </>
   );
 }

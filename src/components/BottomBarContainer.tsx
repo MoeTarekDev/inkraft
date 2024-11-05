@@ -4,11 +4,13 @@ import NotificationLinkAndCount from "./NotificationLinkAndCount";
 
 export default async function BottomBarContainer({
   unreadNotificationsCount,
+  userImage,
 }: {
   unreadNotificationsCount: number;
+  userImage: string;
 }) {
   return (
-    <BottomBarClient>
+    <BottomBarClient userImage={userImage}>
       <Find />
       <NotificationLinkAndCount
         isBottomBarActivated={true}

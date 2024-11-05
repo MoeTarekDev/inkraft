@@ -36,6 +36,7 @@ export default function HomePageInfiniteLoading({
       fetchData();
     }
   }, [inView, id, data, hasMore, offset]);
+
   return (
     <>
       {data.map((post: Post) => (

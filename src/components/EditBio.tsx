@@ -1,17 +1,17 @@
 "use client";
+import { useToast } from "@/hooks/use-toast";
 import { addBio } from "@/lib/actions";
-import { useState } from "react";
+import { useOptimistic, useState } from "react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 export default function EditBio({ userBaseInfo, userId }: any) {
   const [showForm, setShowForm] = useState(false);
   const [value, setValue] = useState(0);
-  const [isPending, setIsPending] = useState(false);
   const { toast } = useToast();
+  const [bioOptimistic, setBioOptimistic] = useOptimistic<string | null>(
+    userBaseInfo[0].bio
+  );
   async function handleSubmit(e: any) {
-    setIsPending(true);
-
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const bio = formData.get("bio") as string;
@@ -19,6 +19,9 @@ export default function EditBio({ userBaseInfo, userId }: any) {
       bio,
       userId,
     };
+    setBioOptimistic(bio);
+    setShowForm(false);
+
     try {
       await addBio(bioData);
     } catch (error: any) {
@@ -26,9 +29,6 @@ export default function EditBio({ userBaseInfo, userId }: any) {
         variant: "destructive",
         description: error.message,
       });
-    } finally {
-      setShowForm(false);
-      setIsPending(false);
     }
   }
 
@@ -37,7 +37,8 @@ export default function EditBio({ userBaseInfo, userId }: any) {
       <div className="flex flex-col gap-2 w-[300px]  sm:w-[500px] px-5">
         {showForm ? null : (
           <p className={`text-center`}>
-            {userBaseInfo && userBaseInfo.length > 0 ? userBaseInfo[0].bio : ""}
+            {/* {userBaseInfo && userBaseInfo.length > 0 ? userBaseInfo[0].bio : ""} */}
+            {bioOptimistic}
           </p>
         )}
         {userBaseInfo[0].clerkUserId === userId && (
@@ -67,7 +68,9 @@ export default function EditBio({ userBaseInfo, userId }: any) {
                 >
                   Cancel
                 </Button>
-                <FormButton value={value} isPending={isPending} />
+                <Button disabled={value > 100} type="submit">
+                  Save
+                </Button>
               </div>
             </form>
             <span
@@ -85,16 +88,6 @@ export default function EditBio({ userBaseInfo, userId }: any) {
           </>
         )}
       </div>
-    </>
-  );
-}
-
-function FormButton({ value, isPending }: any) {
-  return (
-    <>
-      <Button disabled={isPending || value > 100 ? true : false} type="submit">
-        {isPending ? "Saving" : "Save"}
-      </Button>
     </>
   );
 }
