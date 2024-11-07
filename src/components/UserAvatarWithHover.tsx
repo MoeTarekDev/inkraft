@@ -23,7 +23,7 @@ export default function UserAvatarWithHover({
             <AvatarImage
               src={user?.imageUrl}
               alt="user image"
-              className="w-full h-full rounded-full object-cover"
+              className="rounded-full object-cover w-9 h-9 "
             />
             <AvatarFallback>
               {user ? user.firstName[0] + user.lastName[0] : "CN"}

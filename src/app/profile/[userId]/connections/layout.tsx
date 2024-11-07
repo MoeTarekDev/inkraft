@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getUser } from "@/lib/users";
 import { Suspense } from "react";
 
-export default async function Layout({
+export default function Layout({
   children,
   params,
 }: Readonly<{

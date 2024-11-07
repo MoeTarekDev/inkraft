@@ -5,8 +5,10 @@ import NotificationVoted from "./NotificationVoted";
 import NotificationsPageInfiniteLoading from "./NotificationsPageInfiniteLoading";
 
 export default async function NotificationsAsyncPart({ info }: { info: any }) {
-  const notifications = await fetchNotificationsForUser(info?.id, 0, 10);
-  const loggedInUserFollowedUsers: any = await getFollowedUsers(info?.id);
+  const [notifications, loggedInUserFollowedUsers] = await Promise.all([
+    fetchNotificationsForUser(info?.id, 0, 10),
+    getFollowedUsers(info?.id),
+  ]);
   const notificationsType = {
     follow: NotificationFollow,
     vote: NotificationVoted,

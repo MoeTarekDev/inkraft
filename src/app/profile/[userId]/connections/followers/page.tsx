@@ -16,8 +16,10 @@ export default async function page({ params }: any) {
 
 async function UserFollowers({ userId }: { userId: string }) {
   const info = await currentUser();
-  const followers: any = await getUserFollowersInfo(userId, 0, 10);
-  const loggedInUserFollowedUsers = await getFollowedUsers(info?.id);
+  const [followers, loggedInUserFollowedUsers] = await Promise.all([
+    getUserFollowersInfo(userId, 0, 10),
+    getFollowedUsers(info?.id),
+  ]);
 
   return (
     <>

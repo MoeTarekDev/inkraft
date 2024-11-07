@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import ThemeChanger from "./ThemeChanger";
 import { useCallback, useEffect, useState } from "react";
@@ -32,6 +31,8 @@ export default function TopBar({
     const currentScrollPos = window.scrollY;
     if (currentScrollPos > prevScrollPos) {
       setIsVisible(false);
+    } else if (currentScrollPos === 0) {
+      setIsVisible(true);
     } else {
       setIsVisible(true);
     }

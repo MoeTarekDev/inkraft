@@ -2,7 +2,6 @@ import BookmarksPageInfiniteLoading from "@/components/BookmarksPageInfiniteLoad
 import CaptionCard from "@/components/CaptionCard";
 import DeleteAllBookmarks from "@/components/DeleteAllBookmarks";
 import ShowWhoToFollowLayout from "@/components/ShowWhoToFollowLayout";
-import { Post } from "@/lib/types";
 import { getFollowedUsers, getUserBookmarkedPosts } from "@/lib/users";
 import { currentUser } from "@clerk/nextjs/server";
 import { Metadata } from "next";
@@ -28,29 +27,30 @@ export default async function page() {
           <DeleteAllBookmarks userId={info?.id} />
         </div>
         <Suspense fallback={<div className="loader self-center"></div>}>
-          <UserBookmarks />
+          <UserBookmarks userId={info?.id} userImage={info?.imageUrl} />
         </Suspense>
       </div>
     </ShowWhoToFollowLayout>
   );
 }
 
-async function UserBookmarks() {
-  const info: any = await currentUser();
-  const bookmarkedPosts: any = await getUserBookmarkedPosts(info?.id, 0, 10);
-  const loggedInUserFollowedUsers = await getFollowedUsers(info?.id);
+async function UserBookmarks({ userId, userImage }: any) {
+  const [bookmarkedPosts, loggedInUserFollowedUsers] = await Promise.all([
+    getUserBookmarkedPosts(userId, 0, 10),
+    getFollowedUsers(userId),
+  ]);
 
   return (
     <>
       {bookmarkedPosts && bookmarkedPosts.length > 0 ? (
         <div>
-          {bookmarkedPosts.map((post: Post) => (
+          {bookmarkedPosts.map((post: any) => (
             <CaptionCard
               personalInfo={null}
               bigPost={null}
               key={post.id}
-              userId={info?.id}
-              userImage={info?.imageUrl}
+              userId={userId}
+              userImage={userImage}
               post={post}
               rounded={false}
               singlePostMode={false}

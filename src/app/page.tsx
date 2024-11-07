@@ -1,7 +1,6 @@
 import CaptionCard from "@/components/CaptionCard";
 import HomePageInfiniteLoading from "@/components/HomePageInfiniteLoading";
 import ShowWhoToFollowLayout from "@/components/ShowWhoToFollowLayout";
-import { Post } from "@/lib/types";
 import { getFollowedUsers, getFollowedUsersPostsAndReposts } from "@/lib/users";
 import { currentUser } from "@clerk/nextjs/server";
 import { Metadata } from "next";
@@ -26,19 +25,16 @@ export default async function Home() {
 
 async function FollowedUsersPosts() {
   const info: any = await currentUser();
-  //@ts-expect-error nvm
-  const followedUsersPosts: [Post] = await getFollowedUsersPostsAndReposts(
-    info.id,
-    0,
-    10
-  );
-  const loggedInUserFollowedUsers: any = await getFollowedUsers(info.id);
 
+  const [followedUsersPosts, loggedInUserFollowedUsers] = await Promise.all([
+    getFollowedUsersPostsAndReposts(info?.id, 0, 10),
+    getFollowedUsers(info?.id),
+  ]);
   return (
     <>
       {followedUsersPosts.length > 0 ? (
         <>
-          {followedUsersPosts.map((post: Post) => (
+          {followedUsersPosts.map((post: any) => (
             <CaptionCard
               personalInfo={null}
               bigPost={null}

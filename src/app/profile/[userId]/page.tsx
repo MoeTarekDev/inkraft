@@ -46,7 +46,7 @@ export default async function page({ params }: any) {
           <ProfilePageAvatarImage userBaseInfo={userBaseInfo} />
         </div>
         <Suspense fallback={<UserPersonalInfoSkeleton />}>
-          <UserPersonalInfo userId={userId} />
+          <UserPersonalInfo userId={userId} currentUserId={info?.id} />
         </Suspense>
       </div>
       <div className="self-stretch">
@@ -88,12 +88,21 @@ export default async function page({ params }: any) {
   );
 }
 
-async function UserPersonalInfo({ userId }: { userId: string }) {
-  const info: any = await currentUser();
-  const userBaseInfo = await getUser(userId);
-  const followedUsers: any = await getFollowedUsers(userId);
-  const myFollowers: any = await getUserFollowers(userId);
-  const loggedInUserFollowedUsers: any = await getFollowedUsers(info.id);
+async function UserPersonalInfo({
+  userId,
+  currentUserId,
+}: {
+  userId: string;
+  currentUserId: string;
+}) {
+  const [userBaseInfo, followedUsers, myFollowers, loggedInUserFollowedUsers] =
+    await Promise.all([
+      getUser(userId),
+      getFollowedUsers(userId),
+      getUserFollowers(userId),
+      getFollowedUsers(currentUserId),
+    ]);
+
   if (!userBaseInfo || userBaseInfo.length === 0) notFound();
   return (
     <>
@@ -107,7 +116,7 @@ async function UserPersonalInfo({ userId }: { userId: string }) {
             @{userBaseInfo && userBaseInfo[0].userName}
           </span>
         </div>
-        <EditBio userBaseInfo={userBaseInfo} userId={info?.id} />
+        <EditBio userBaseInfo={userBaseInfo} userId={currentUserId} />
         <div className="flex items-center gap-2">
           <Link
             href={`/profile/${userId}/connections/followers`}
@@ -128,9 +137,9 @@ async function UserPersonalInfo({ userId }: { userId: string }) {
             </span>
           </Link>
         </div>
-        {info.id === userId ? null : (
+        {currentUserId === userId ? null : (
           <FollowButton
-            followerId={info.id}
+            followerId={currentUserId}
             followedId={
               userBaseInfo && userBaseInfo.length && userBaseInfo[0].clerkUserId
             }

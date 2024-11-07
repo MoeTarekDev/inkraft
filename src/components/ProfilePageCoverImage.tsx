@@ -23,20 +23,24 @@ export default function ProfilePageCoverImage({}) {
           src={defaultCover}
           alt="Profile cover"
           fill
+          priority={true}
           className="object-cover"
         />
       </DialogContent>
 
-      <DialogTrigger className="group w-full cursor-pointer">
-        <div className="layer group-hover:flex group-hover:z-10 group-hover:opacity-100 hidden  absolute opacity-0 inset-0 bg-black/10 w-full h-full justify-center items-center gap-4 transition-opacity duration-300"></div>
-        <Image
-          quality={70}
-          src={defaultCover}
-          alt="Profile cover"
-          fill
-          className="object-cover"
-        />
-      </DialogTrigger>
+      <div className="relative inset-0 group w-full h-full cursor-pointer">
+        <DialogTrigger className="block w-full h-full relative">
+          <div className="layer group-hover:flex group-hover:z-10 group-hover:opacity-100 hidden  absolute opacity-0 inset-0 bg-black/10 w-full h-full justify-center items-center gap-4 transition-opacity duration-300"></div>
+          <Image
+            quality={70}
+            src={defaultCover}
+            alt="Profile cover"
+            fill
+            priority={true}
+            className="object-cover"
+          />
+        </DialogTrigger>
+      </div>
     </Dialog>
   );
 }

@@ -40,6 +40,7 @@ export default function CaptionCardImage({ postImage }: any) {
             src={postImage}
             alt="post image"
             fill
+            sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-contain rounded-lg" // Use object-contain to ensure no part of the image is cropped
           />
         </div>
@@ -55,7 +56,9 @@ export default function CaptionCardImage({ postImage }: any) {
             src={postImage}
             alt="post thumbnail"
             fill
-            className="object-cover rounded-lg" // Use object-cover for the thumbnail
+            priority={true}
+            sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-contain rounded-lg" // Use object-cover for the thumbnail
           />
         </div>
       </DialogTrigger>

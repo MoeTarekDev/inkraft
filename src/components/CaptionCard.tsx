@@ -200,6 +200,7 @@ export default function CaptionCard({
       }  bg-card h-fit border-b-2 hover:bg-muted/40 relative `}
     >
       <Link
+        prefetch={true}
         href={`/${
           post.isRepost
             ? post.original_post?.users.userName
@@ -259,14 +260,7 @@ export default function CaptionCard({
             {post.isRepost ? post.original_post?.caption : post?.caption}
           </p>
           {post?.image ? (
-            <CaptionCardImage postImage={post.image}>
-              <Image
-                src={post.image}
-                alt="post image"
-                fill
-                className="object-cover rounded-lg"
-              />
-            </CaptionCardImage>
+            <CaptionCardImage postImage={post.image}></CaptionCardImage>
           ) : null}
           {post?.original_post?.image ? (
             <CaptionCardImage postImage={post.original_post?.image}>
